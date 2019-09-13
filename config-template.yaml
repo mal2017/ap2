@@ -1,0 +1,10 @@
+genome: yeast_genome.fa.gz
+bait: NA
+blacklist: path/to/blacklist
+samples:
+  yeast_atac:
+    fastq:
+      r1:
+        - yeast_atac_1.fastq.gz
+      r2:
+        - yeast_atac_2.fastq.gz
