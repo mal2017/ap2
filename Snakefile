@@ -10,6 +10,27 @@ shell.executable("/bin/bash")
 
 configfile: "config.yaml"
 
+"""
+CLUSTER_NAME=snk-cl2
+NODES=2
+ZONE=us-central1-a
+REMOTE=GS
+PREFIX=archibald
+MACHINE_TYPE=n1-standard-4
+gcloud container clusters create $CLUSTER_NAME \
+    --num-nodes=$NODES \
+    --scopes storage-rw \
+    --machine-type=$MACHINE_TYPE \
+    --zone $ZONE
+gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
+
+snakemake --kubernetes --use-conda --default-remote-provider $REMOTE --default-remote-prefix $PREFIX
+
+# after
+gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
+"""
+
+
 ## default
 # prealignment to bait seqs
 # remove chrom m and save
@@ -45,7 +66,9 @@ rule target:
         #"index.sr.mmi"
         #expand("index_bt2.{x}",x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"]),
         #expand("alignments_bt2/{s}.raw.{f}",s=config.get("samples",None),f=["sam"]),
-        expand("{s}.subs.cram",s=config.get("samples",None))
+        #expand("{s}.subs.cram",s=config.get("samples",None,
+        #expand("index_bwa.{x}",x=["amb","ann","bwt","pac","sa"])
+        "index_bwa.done"
 
 rule index_genome_bt2:
     input:
@@ -75,6 +98,27 @@ rule align_bt2:
         "--very-fast-local -X 2000 "
         "-x index_bt2 -1 {input.r1} -2 {input.r2} "
         "-S {output}"
+
+rule index_genome_mm2:
+    input:
+        config.get("genome",None)
+    output:
+        "index_mm2.sr.mmi"
+    conda:
+        "environments/minimap2.yaml"
+    shell:
+        "minimap2 -x sr -d {output} {input}"
+
+rule index_genome_bwa:
+    input:
+        config.get("genome",None)
+    output:
+        #expand("index_bwa.{x}",x=["amb","ann","bwt","pac","sa"])
+        touch("index_bwa.done")
+    conda:
+        "environments/bwa.yaml"
+    shell:
+        "bwa index -p index_bwa {input}"
 
 rule unzip_genome:
     input:
