@@ -24,7 +24,10 @@ gcloud container clusters create $CLUSTER_NAME \
     --zone $ZONE
 gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
 
-snakemake --kubernetes --use-conda --default-remote-provider $REMOTE --default-remote-prefix $PREFIX
+snakemake --kubernetes --use-conda \
+    --default-remote-provider $REMOTE \
+    --default-remote-prefix $PREFIX \
+    --latency-wait 300
 
 # after
 gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
@@ -64,24 +67,33 @@ rule target:
     input:
         #expand("alignments/{s}.raw.sam",s=config.get("samples",None))
         #"index.sr.mmi"
-        #expand("index_bt2.{x}",x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"]),
         #expand("alignments_bt2/{s}.raw.{f}",s=config.get("samples",None),f=["sam"]),
         #expand("{s}.subs.cram",s=config.get("samples",None,
-        #expand("index_bwa.{x}",x=["amb","ann","bwt","pac","sa"])
-        "index_bwa.done"
-
+        #expand("{g}.{x}",g= config.get("genome",None), x=["amb","ann","bwt","pac","sa"]),
+        expand("{g}.{x}",g= config.get("genome",None), x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"])
 
 
 rule index_genome_bwa:
     input:
         config.get("genome",None)
     output:
-        #expand("index_bwa.{x}",x=["amb","ann","bwt","pac","sa"])
-        touch("index_bwa.done")
+        expand("{g}.{x}",g= config.get("genome",None), x=["amb","ann","bwt","pac","sa"])
     conda:
         "environments/bwa.yaml"
     shell:
-        "bwa index -p index_bwa {input}"
+        "bwa index {input}"
+
+rule index_genome_bt2:
+    input:
+        config.get("genome",None)
+    output:
+        expand("{g}.{x}",g= config.get("genome",None), x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"])
+    singularity:
+        "docker://quay.io/biocontainers/bowtie2:2.3.5--py37he860b03_0"
+    conda:
+        "environments/bowtie2.yaml"
+    shell:
+        "bowtie2-build {input} {input}"
 
 # rule unzip_genome:
 #     input:
