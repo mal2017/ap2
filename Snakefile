@@ -45,86 +45,85 @@ rule target:
         #"index.sr.mmi"
         #expand("index_bt2.{x}",x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"]),
         #expand("alignments_bt2/{s}.raw.{f}",s=config.get("samples",None),f=["sam"]),
-        #expand("{s}.subs.cram",s=config.get("samples",None))
-        "dummy.txt"
+        expand("{s}.subs.cram",s=config.get("samples",None))
 
-# rule index_genome_bt2:
-#     input:
-#         config.get("genome",None)
-#     output:
-#         expand("index_bt2.{x}",x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"])
-#     singularity:
-#         "docker://quay.io/biocontainers/bowtie2:2.3.5--py37he860b03_0"
-#     conda:
-#         "environments/bowtie2.yaml"
-#     shell:
-#         "bowtie2-build {input} index_bt2"
-#
-# rule align_bt2:
-#     input:
-#         r1 = lambda wc: config["samples"][wc.s]["fastq"]["r1"],
-#         r2 = lambda wc: config["samples"][wc.s]["fastq"]["r2"],
-#         idx = rules.index_genome_bt2.output,
-#     output:
-#         "alignments_bt2/{s}.raw.sam"
-#     conda:
-#         "environments/bowtie2.yaml"
-#     threads:
-#         2
-#     shell:
-#         "bowtie2 --trim-to 3:30 -p {threads} --phred33 "
-#         "--very-fast-local -X 2000 "
-#         "-x index_bt2 -1 {input.r1} -2 {input.r2} "
-#         "-S {output}"
-#
-# rule unzip_genome:
-#     input:
-#         g=config.get("genome",None)
-#     output:
-#         temp("temp_genome.fa")
-#     shell:
-#         "gzip --keep -d {input.g} -c > {output}"
-#
-# rule sam_to_cram:
-#     input:
-#         sam="{file}.sam",
-#         g=rules.unzip_genome.output
-#     output:
-#         "{file}.cram"
-#     conda:
-#         "environments/samtools.yaml"
-#     threads:
-#         2
-#     shell:
-#         "samtools sort {input.sam} -@ {threads} -o {output} --reference {input.g}"
-#
-# rule cram_to_bam:
-#     input:
-#         cram="{file}.cram",
-#         g=rules.unzip_genome.output
-#     output:
-#         temp("{file}.bam")
-#     conda:
-#         "environments/samtools.yaml"
-#     shell:
-#         "samtools view -b {input.cram} -o {output} -T {input.g}"
-#
-# rule subsamp:
-#     input:
-#         "alignments_bt2/{s}.raw.cram"
-#     output:
-#         "{s}.subs.cram"
-#     conda:
-#         "environments/samtools.yaml"
-#     shell:
-#         "samtools view -C {input} -o {output} -s 0.0005"
+rule index_genome_bt2:
+    input:
+        config.get("genome",None)
+    output:
+        expand("index_bt2.{x}",x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"])
+    singularity:
+        "docker://quay.io/biocontainers/bowtie2:2.3.5--py37he860b03_0"
+    conda:
+        "environments/bowtie2.yaml"
+    shell:
+        "bowtie2-build {input} index_bt2"
 
-rule dummy:
+rule align_bt2:
+    input:
+        r1 = lambda wc: config["samples"][wc.s]["fastq"]["r1"],
+        r2 = lambda wc: config["samples"][wc.s]["fastq"]["r2"],
+        idx = rules.index_genome_bt2.output,
+    output:
+        "alignments_bt2/{s}.raw.sam"
+    conda:
+        "environments/bowtie2.yaml"
+    threads:
+        2
+    shell:
+        "bowtie2 --trim-to 3:30 -p {threads} --phred33 "
+        "--very-fast-local -X 2000 "
+        "-x index_bt2 -1 {input.r1} -2 {input.r2} "
+        "-S {output}"
+
+rule unzip_genome:
     input:
         g=config.get("genome",None)
     output:
-        "dummy.txt"
+        temp("temp_genome.fa")
+    shell:
+        "gzip --keep -d {input.g} -c > {output}"
+
+rule sam_to_cram:
+    input:
+        sam="{file}.sam",
+        g=rules.unzip_genome.output
+    output:
+        "{file}.cram"
+    conda:
+        "environments/samtools.yaml"
+    threads:
+        2
+    shell:
+        "samtools sort {input.sam} -@ {threads} -o {output} --reference {input.g}"
+
+rule cram_to_bam:
+    input:
+        cram="{file}.cram",
+        g=rules.unzip_genome.output
+    output:
+        temp("{file}.bam")
     conda:
         "environments/samtools.yaml"
     shell:
-        "ls -lh {input.g} > {output}"
+        "samtools view -b {input.cram} -o {output} -T {input.g}"
+
+rule subsamp:
+    input:
+        "alignments_bt2/{s}.raw.cram"
+    output:
+        "{s}.subs.cram"
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools view -C {input} -o {output} -s 0.0005"
+
+# rule dummy:
+#     input:
+#         g=config.get("genome",None)
+#     output:
+#         "dummy.txt"
+#     conda:
+#         "environments/samtools.yaml"
+#     shell:
+#         "ls -lh {input.g} > {output}"
