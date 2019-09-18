@@ -51,7 +51,7 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 
 rule target:
     input:
-        expand("{s}.subs.cram",s=config.get("samples",None)),
+        expand("{s}.raw.cram",s=config.get("samples",None)),
 
 
 #http://biolearnr.blogspot.com/2017/11/snakemake-using-inputoutput-values-in.html
@@ -59,9 +59,12 @@ rule align_bt2:
     input:
         r1 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r1"]),
         r2 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r2"]),
-        idx = hg38_idx_paths
+        idx = hg38_idx_paths,
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
     output:
-        temp("{s}.raw.sam")
+        temp("{s}.raw.cram")
     conda:
         "environments/bowtie2.yaml"
     threads:
@@ -71,28 +74,29 @@ rule align_bt2:
     params:
         idx_pfx = hg38_idx_pfx,
     shell:
-        "bowtie2 --trim-to 3:30 -p {threads} --phred33 "
+        "bowtie2 --trim-to 3:30 --phred33 "
         "--no-discordant "
         "--no-unal "
         "-k 1 -X 800 "
         "-x {params.idx_pfx} -1 {input.r1} -2 {input.r2} "
-        "-S {output} "
-        "-u 10000"
+        #"-S {output} "
+        "--skip 1000000 -u 10000000 | "
+        "samtools sort -O cram -o {output} --reference {input.fa}"
 
-rule sam_to_cram:
-    input:
-        sam="{file}.sam",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
-    output:
-        "{file}.cram"
-    conda:
-        "environments/samtools.yaml"
-    threads:
-        2
-    shell:
-        "samtools sort {input.sam} -@ {threads} -O cram -o {output} --reference {input.fa}"
+# rule sam_to_cram:
+#     input:
+#         sam="{file}.sam",
+#         fa=hg38_fa,
+#         fai=hg38_fai,
+#         gzi=hg38_gzi,
+#     output:
+#         "{file}.cram"
+#     conda:
+#         "environments/samtools.yaml"
+#     threads:
+#         2
+#     shell:
+#         "samtools sort {input.sam} -@ {threads} -O cram -o {output} --reference {input.fa}"
 
 rule cram_to_bam:
     input:
@@ -125,6 +129,11 @@ rule subsamp:
 # prealignment to bait seqs
 # filter unwanted chroms
 # rule to combine multiple fqs per end
+# rule to count kmers? motifs? maybe convert to fasta first?
+
+
+
+
 # idr
 # normalize peak scores
 # choose best peaks from cohort
