@@ -1,6 +1,8 @@
 from os.path import realpath
 from os.path import split as pathsplit
 import subprocess
+from snakemake.remote.GS import RemoteProvider as GSRemoteProvider
+from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
 
 # info
 __author__ = "Matt Lawlor"
@@ -8,7 +10,20 @@ __author__ = "Matt Lawlor"
 # set shell
 shell.executable("/bin/bash")
 
+# configuration for cloud runs
 configfile: "config.yaml"
+
+# set remotes
+GS = GSRemoteProvider()
+FTP = FTPRemoteProvider()
+
+# remote resources
+hg38_idx_files = ["seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index." + x for x in ["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"]]
+hg38_idx_paths = [GS.remote(y) for y in hg38_idx_files]
+hg38_fa = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz")
+hg38_fai = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz.fai")
+hg38_gzi = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz.gzi")
+hg38_idx_pfx = "seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index"
 
 """
 CLUSTER_NAME=snk-cl2
@@ -34,84 +49,42 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 """
 
 
-## default
-# prealignment to bait seqs
-# remove chrom m and save
-# filter discordant reads
-# filter unmapped reads
-# convert to cram
-# save my reference genomes somewhere safe!!
-# rule to download from sra, or ena, or ftp, or box, or dropbox, or google drive
-# rule to combine multiple fqs per end
-# align with bt2 or bwa aln
-# idr
-# normalize peak scores
-# choose best peaks from cohort
-# quantify and store as hdf5 or something compressed
-# cuts per covered base
-# tss plots
-# frips
-# methods: https://www.biostars.org/p/220268/
-## special subworkflows
-# samtools stats
-# multiqc
-# regions of interest plots
-# nucleosome calling
-# footprint calling
-# copy number
-# se calling?
-# bigwig generation
-#
-
 rule target:
     input:
         expand("{s}.subs.cram",s=config.get("samples",None)),
 
-#http://biolearnr.blogspot.com/2017/11/snakemake-using-inputoutput-values-in.html
-# think about using this to substitute prefix so that the prefix includes archibald
-# or whatever the remote should be.
-rule index_genome_bt2:
-    input:
-        config.get("genome",None)
-    output:
-        expand("{g}.{x}",g= config.get("genome",None), x=["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"])
-    singularity:
-        "docker://quay.io/biocontainers/bowtie2:2.3.5--py37he860b03_0"
-    conda:
-        "environments/bowtie2.yaml"
-    shell:
-        "bowtie2-build {input} {input}"
 
+#http://biolearnr.blogspot.com/2017/11/snakemake-using-inputoutput-values-in.html
 rule align_bt2:
     input:
-        r1 = lambda wc: config["samples"][wc.s]["fastq"]["r1"],
-        r2 = lambda wc: config["samples"][wc.s]["fastq"]["r2"],
-        idx = rules.index_genome_bt2.output,
-        idx_path = config.get("genome",None)
+        r1 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r1"]),
+        r2 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r2"]),
+        idx = hg38_idx_paths
     output:
-        "{s}.raw.sam"
+        temp("{s}.raw.sam")
     conda:
         "environments/bowtie2.yaml"
     threads:
         2
+    singularity:
+        "docker://quay.io/biocontainers/bowtie2:2.3.5--py37he860b03_0"
+    params:
+        idx_pfx = hg38_idx_pfx,
     shell:
         "bowtie2 --trim-to 3:30 -p {threads} --phred33 "
-        "--very-fast-local -X 2000 "
-        "-x {input.idx_path} -1 {input.r1} -2 {input.r2} "
-        "-S {output}"
-
-rule unzip_genome:
-    input:
-        g=config.get("genome",None)
-    output:
-        temp("temp_genome.fa")
-    shell:
-        "gzip --keep -d {input.g} -c > {output}"
+        "--no-discordant "
+        "--no-unal "
+        "-k 1 -X 800 "
+        "-x {params.idx_pfx} -1 {input.r1} -2 {input.r2} "
+        "-S {output} "
+        "-u 10000"
 
 rule sam_to_cram:
     input:
         sam="{file}.sam",
-        g=rules.unzip_genome.output
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
     output:
         "{file}.cram"
     conda:
@@ -119,25 +92,45 @@ rule sam_to_cram:
     threads:
         2
     shell:
-        "samtools sort {input.sam} -@ {threads} -o {output} --reference {input.g}"
+        "samtools sort {input.sam} -@ {threads} -O cram -o {output} --reference {input.fa}"
 
 rule cram_to_bam:
     input:
         cram="{file}.cram",
-        g=rules.unzip_genome.output
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
     output:
         temp("{file}.bam")
     conda:
         "environments/samtools.yaml"
     shell:
-        "samtools view -b {input.cram} -o {output} -T {input.g}"
+        "samtools view -b {input.cram} -o {output} -T {input.fa}"
 
 rule subsamp:
     input:
-        "{s}.raw.cram"
+        c="{s}.raw.cram",
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
     output:
         "{s}.subs.cram"
     conda:
         "environments/samtools.yaml"
     shell:
-        "samtools view -C {input} -o {output} -s 0.0005"
+        "samtools view -C {input.c} -o {output} -s 0.0005 -T {input.fa}"
+
+## TODO
+# function for making remote objects or checking if local and either making a remote object or a path including sra
+# prealignment to bait seqs
+# filter unwanted chroms
+# rule to combine multiple fqs per end
+# idr
+# normalize peak scores
+# choose best peaks from cohort
+# quantify and store as sparse hdf5 or something compressed
+# cuts per covered base per total reads
+# histogram/distribution of cuts/base
+# frips
+# make a dataframe with metadata
+# methods: https://www.biostars.org/p/220268/

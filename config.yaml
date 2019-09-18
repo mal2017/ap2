@@ -1,10 +1,9 @@
-genome: yeast_genome.fa.gz
-bait: NA
+genome: NCBI-hg38 # one of NCBI-hg38
 blacklist: path/to/blacklist
 samples:
-  yeast_atac:
+  mm1s:
     fastq:
       r1:
-        - yeast_atac_1.fastq.gz
+        - ftp.sra.ebi.ac.uk/vol1/fastq/SRR335/001/SRR3356451/SRR3356451_1.fastq.gz
       r2:
-        - yeast_atac_2.fastq.gz
+        - ftp.sra.ebi.ac.uk/vol1/fastq/SRR335/001/SRR3356451/SRR3356451_2.fastq.gz
