@@ -54,8 +54,41 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 
 rule target:
     input:
-        expand("{s}.raw.cram",s=config.get("samples",None)),
+        expand("{s}.filt.cram",s=config.get("samples",None)),
 
+# ------------------------------------------------------------------------------
+# Generics
+# ------------------------------------------------------------------------------
+
+rule index_cram:
+    input:
+        "{file}.cram"
+    output:
+        "{file}.cram.crai"
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools index {input}"
+
+rule cram_to_bam:
+    """
+    A generic rule for converting cram to bam when downstream tools require bam.
+    """
+    input:
+        cram="{file}.cram",
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
+    output:
+        temp("{file}.bam")
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools view -b {input.cram} -o {output} -T {input.fa}"
+
+# ------------------------------------------------------------------------------
+# Preproc
+# ------------------------------------------------------------------------------
 
 #http://biolearnr.blogspot.com/2017/11/snakemake-using-inputoutput-values-in.html
 rule align_bt2:
@@ -67,7 +100,7 @@ rule align_bt2:
         fai=hg38_fai,
         gzi=hg38_gzi,
     output:
-        temp("{s}.raw.cram")
+        "{s}.raw.cram"
     conda:
         "environments/bowtie2.yaml"
     threads:
@@ -96,7 +129,8 @@ rule filter_reads:
         fa=hg38_fa,
         fai=hg38_fai,
         gzi=hg38_gzi,
-        bl=hg38_bl
+        bl=hg38_bl,
+        crai="{s}.raw.cram.crai"
     output:
         "{s}.filt.cram"
     conda:
@@ -116,27 +150,9 @@ rule filter_reads:
         "-o {output} --reference {input.fa}"
 
 
-rule cram_to_bam:
-    """
-    A generic rule for converting cram to bam when downstream tools require bam.
-    """
-    input:
-        cram="{file}.cram",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
-    output:
-        temp("{file}.bam")
-    conda:
-        "environments/samtools.yaml"
-    shell:
-        "samtools view -b {input.cram} -o {output} -T {input.fa}"
-
-
 ## TODO
 # function for making remote objects or checking if local and either making a remote object or a path including sra
 # prealignment to bait seqs
-# cram indices
 # bigwigs (from subsample?)
 # call peaks?
 # subsampling option as part of bowtei2 alignment (ask to skip/only align n seqs)
