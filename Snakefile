@@ -54,8 +54,59 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 
 rule target:
     input:
-        expand("{s}.raw.cram",s=config.get("samples",None)),
+        expand("{s}.clean.cram",s=config.get("samples",None)),
 
+# ------------------------------------------------------------------------------
+# Generics
+# ------------------------------------------------------------------------------
+
+rule index_cram:
+    input:
+        "{file}.cram"
+    output:
+        "{file}.cram.crai"
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools index {input}"
+
+rule cram_to_bam:
+    """
+    A generic rule for converting cram to bam when downstream tools require bam.
+    """
+    input:
+        cram="{file}.cram",
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
+    output:
+        temp("{file}.bam")
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools view -b {input.cram} -o {output} -T {input.fa}"
+
+rule nsort_cram:
+    """
+    Generic rule for sorting a cram by read name.
+    """
+    input:
+        crm="{file}.cram",
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
+    output:
+        "{file}.nsrt.cram"
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools sort -n -O cram {input.crm} --reference {input.fa} -o {output} "
+        "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0"
+
+
+# ------------------------------------------------------------------------------
+# Preproc
+# ------------------------------------------------------------------------------
 
 #http://biolearnr.blogspot.com/2017/11/snakemake-using-inputoutput-values-in.html
 rule align_bt2:
@@ -67,7 +118,7 @@ rule align_bt2:
         fai=hg38_fai,
         gzi=hg38_gzi,
     output:
-        temp("{s}.raw.cram")
+        "{s}.raw.cram"
     conda:
         "environments/bowtie2.yaml"
     threads:
@@ -87,56 +138,74 @@ rule align_bt2:
         "samtools sort -O cram --output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
         "-o {output} --reference {input.fa}"
 
-rule filter_reads:
+rule chrom_filter_reads:
     """
-    Remove blacklistlisted reads.
+    Retain main chr reads.
     """
     input:
         crm=rules.align_bt2.output,
         fa=hg38_fa,
         fai=hg38_fai,
         gzi=hg38_gzi,
-        bl=hg38_bl
+        bl=hg38_bl,
+        crai="{s}.raw.cram.crai"
     output:
-        "{s}.filt.cram"
+        "{s}.chroi.cram"
     conda:
-        "environments/bowtie2.yaml"
+        "environments/samtools.yaml"
     threads:
-        4
+        1
     group:
         "preproc"
     params:
         chr = hg38_chroi_names
     shell:
-        "samtools fixmate -m {input.crm} | "
-        "samtools view -u -q 30 - {params.chr} |"
-        "samtools markdup -r - |"
-        "samtools sort -O cram -U -M -L {input.bl} "
-        "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
-        "-o {output} --reference {input.fa}"
+        "samtools view -C -q 30 --reference {input.fa} {input.crm} {params.chr} -o {output}"
 
-
-rule cram_to_bam:
+rule blacklist_filter_reads:
     """
-    A generic rule for converting cram to bam when downstream tools require bam.
+    Remove blacklistlisted reads.
     """
     input:
-        cram="{file}.cram",
+        crm=rules.chrom_filter_reads.output,
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
+        bl=hg38_bl,
+        crai="{s}.chroi.cram.crai"
+    output:
+        "{s}.bl.cram"
+    conda:
+        "environments/bedtools.yaml"
+    threads:
+        1
+    group:
+        "preproc"
+    shell:
+        "CRAM_REFERENCE={input.fa} "
+        "bedtools intersect -v -a {input.crm} -b {input.bl} > {output}"
+
+
+rule clean_reads:
+    input:
+        crm="{s}.bl.nsrt.cram",
+        crai="{s}.bl.nsrt.cram.crai",
         fa=hg38_fa,
         fai=hg38_fai,
         gzi=hg38_gzi,
     output:
-        temp("{file}.bam")
-    conda:
-        "environments/samtools.yaml"
+        "{s}.clean.cram"
     shell:
-        "samtools view -b {input.cram} -o {output} -T {input.fa}"
+        "samtools fixmate -m --reference {input.fa} {input.crm} - | "
+        "samtools markdup -r --reference {input.fa} - | "
+        "samtools sort -O cram | "
+        "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
+        "-o {output} --reference {input.fa}"
 
 
 ## TODO
 # function for making remote objects or checking if local and either making a remote object or a path including sra
 # prealignment to bait seqs
-# cram indices
 # bigwigs (from subsample?)
 # call peaks?
 # subsampling option as part of bowtei2 alignment (ask to skip/only align n seqs)
