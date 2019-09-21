@@ -54,7 +54,7 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 
 rule target:
     input:
-        expand("{s}.clean.cram",s=config.get("samples",None)),
+        expand("{s}.bl.nsrt.cram",s=config.get("samples",None)),
 
 # ------------------------------------------------------------------------------
 # Generics
@@ -138,36 +138,13 @@ rule align_bt2:
         "samtools sort -O cram --output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
         "-o {output} --reference {input.fa}"
 
-rule chrom_filter_reads:
-    """
-    Retain main chr reads.
-    """
-    input:
-        crm=rules.align_bt2.output,
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
-        bl=hg38_bl,
-        crai="{s}.raw.cram.crai"
-    output:
-        "{s}.chroi.cram"
-    conda:
-        "environments/samtools.yaml"
-    threads:
-        1
-    group:
-        "preproc"
-    params:
-        chr = hg38_chroi_names
-    shell:
-        "samtools view -C -q 30 --reference {input.fa} {input.crm} {params.chr} -o {output}"
 
 rule blacklist_filter_reads:
     """
     Remove blacklistlisted reads.
     """
     input:
-        crm=rules.chrom_filter_reads.output,
+        crm=rules.align_bt2.output,
         fa=hg38_fa,
         fai=hg38_fai,
         gzi=hg38_gzi,
@@ -185,25 +162,47 @@ rule blacklist_filter_reads:
         "CRAM_REFERENCE={input.fa} "
         "bedtools intersect -v -a {input.crm} -b {input.bl} > {output}"
 
+rule fix_mate_info:
+    input:
+        crm="{s}.bl.nsrt.cram",
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
+    output:
+        "{s}.fixm.cram"
+    group: "preproc"
+    threads: 2
+    shell:
+        "samtools fixmate -m --reference {input.fa} {input.crm} - | "
+        "samtools sort -O cram "
+        "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
+        "-o {output} --reference {input.fa}"
 
 rule clean_reads:
     input:
-        crm="{s}.bl.nsrt.cram",
-        crai="{s}.bl.nsrt.cram.crai",
+        crm="{s}.fixm.cram",
+        crai="{s}.fixm.cram.crai",
         fa=hg38_fa,
         fai=hg38_fai,
         gzi=hg38_gzi,
     output:
         "{s}.clean.cram"
+    params:
+        chr=hg38_chroi_names
+    threads:
+        2
     shell:
-        "samtools fixmate -m --reference {input.fa} {input.crm} - | "
-        "samtools markdup -r --reference {input.fa} - | "
-        "samtools sort -O cram | "
+        "samtools view -u -q 30 "
+        "--reference {input.fa} {input.crm} {params.chr} | "
+        "samtools markdup -r "
         "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
-        "-o {output} --reference {input.fa}"
+        "--reference {input.fa} - {output}"
 
 
 ## TODO
+# macs2 callpeak -t test.bam -f BAM --nomodel --shift -50 --keep-dup all
+# merge macs narrowpeaks
+# wellington_footprints.py -p 4 -A NA.merged.bed test.bam ./fps/
 # function for making remote objects or checking if local and either making a remote object or a path including sra
 # prealignment to bait seqs
 # bigwigs (from subsample?)
@@ -215,14 +214,12 @@ rule clean_reads:
 # lossy compression
 # filter further for mononucleosomal and subnucleosomal seqlength
 # i could also assemble consensus alleles if I did the entire fastq
-# remove contigs I don;t want - maybe have to fully align for this?
 # convert to fasta then count kmers with existing tools? or just make a rust/nim tool
 
 
 
 
-# idr
-# normalize peak scores
+# idr or normalize peak scores like the corces atac paper
 # choose best peaks from cohort
 # quantify and store as sparse hdf5 or something compressed
 # cuts per covered base per total reads
