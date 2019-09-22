@@ -26,7 +26,7 @@ hg38_gzi = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz.gzi")
 hg38_idx_pfx = "seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index"
 hg38_chroi_names = ["chr"+str(x) for x in range(1,23)] + ["chrX"]
 hg38_bl = GS.remote("seq-resources/NCBI-hg38/ENCFF419RSJ.bed.gz")
-
+hg38_gs = "2.7e9"
 """
 CLUSTER_NAME=snk-cl2
 NODES=2
@@ -54,7 +54,7 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 
 rule target:
     input:
-        expand("{s}.bl.nsrt.cram",s=config.get("samples",None)),
+        expand("{s}.clean.cram",s=config.get("samples",None)),
 
 # ------------------------------------------------------------------------------
 # Generics
@@ -118,7 +118,7 @@ rule align_bt2:
         fai=hg38_fai,
         gzi=hg38_gzi,
     output:
-        "{s}.raw.cram"
+        temp("{s}.raw.cram")
     conda:
         "environments/bowtie2.yaml"
     threads:
@@ -149,9 +149,9 @@ rule blacklist_filter_reads:
         fai=hg38_fai,
         gzi=hg38_gzi,
         bl=hg38_bl,
-        crai="{s}.chroi.cram.crai"
+        crai="{s}.raw.cram.crai"
     output:
-        "{s}.bl.cram"
+        temp("{s}.bl.cram")
     conda:
         "environments/bedtools.yaml"
     threads:
@@ -169,8 +169,10 @@ rule fix_mate_info:
         fai=hg38_fai,
         gzi=hg38_gzi,
     output:
-        "{s}.fixm.cram"
+        temp("{s}.fixm.cram")
     group: "preproc"
+    conda:
+        "environments/bowtie2.yaml"
     threads: 2
     shell:
         "samtools fixmate -m --reference {input.fa} {input.crm} - | "
@@ -189,6 +191,10 @@ rule clean_reads:
         "{s}.clean.cram"
     params:
         chr=hg38_chroi_names
+    group:
+        "preproc"
+    conda:
+        "environments/bowtie2.yaml"
     threads:
         2
     shell:
@@ -198,20 +204,38 @@ rule clean_reads:
         "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
         "--reference {input.fa} - {output}"
 
+rule call_peaks:
+    input:
+        crm="{s}.clean.bam",
+    output:
+        "{s}_summits.bed",
+        "{s}_peaks.narrowPeak"
+    group:
+        "regions"
+    shadow: "shallow"
+    params:
+        gs=hg38_gs
+    conda:
+        "environments/macs2.yaml"
+    threads:
+        1
+    shell:
+        "macs2 callpeak -t {input} -f BAM "
+        "--nomodel --shift -50 --keep-dup all "
+        "-g {params.gs} -n {wildcards.s} --call-summits"
 
 ## TODO
-# macs2 callpeak -t test.bam -f BAM --nomodel --shift -50 --keep-dup all
 # merge macs narrowpeaks
 # wellington_footprints.py -p 4 -A NA.merged.bed test.bam ./fps/
+# bamCoverage -b GM12878.clean.cram --Offset 4 6 --outFileName GM12878.cpm.bw --outFileFormat bigwig --binSize 50 --smoothLength 150 --verbose --normalizeUsing CPM
 # function for making remote objects or checking if local and either making a remote object or a path including sra
-# prealignment to bait seqs
-# bigwigs (from subsample?)
-# call peaks?
-# subsampling option as part of bowtei2 alignment (ask to skip/only align n seqs)
 # either local alignment for soft clipping or restrict the fragment length further, probs local because
 # rule to combine multiple fqs per end
 # rule to count kmers? motifs? maybe convert to fasta first?
-# lossy compression
+
+
+## IDEAS FOR EXTREME SPACE SAVINGS
+# subsampling option as part of bowtei2 alignment (ask to skip/only align n seqs)
 # filter further for mononucleosomal and subnucleosomal seqlength
 # i could also assemble consensus alleles if I did the entire fastq
 # convert to fasta then count kmers with existing tools? or just make a rust/nim tool
