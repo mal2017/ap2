@@ -7,17 +7,18 @@ from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
 # info
 __author__ = "Matt Lawlor"
 
-# set shell
+# SETUP
 shell.executable("/bin/bash")
-
-# configuration for cloud runs
-configfile: "config.yaml"
-
-# set remotes
 GS = GSRemoteProvider()
 FTP = FTPRemoteProvider()
+configfile: "config.yaml"
 
-# remote resources
+# CONTSTANTS TODO integrate these
+BT2_TRIM_SIZE = 30
+MACS2_SHIFT_SIZE = 15
+
+
+# REMOTE RESOURCES TODO deal with this elegantly - allow mouse as well
 hg38_idx_files = ["seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index." + x for x in ["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"]]
 hg38_idx_paths = [GS.remote(y) for y in hg38_idx_files]
 hg38_fa = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz")
@@ -53,6 +54,7 @@ snakemake --kubernetes --use-conda \
     --default-remote-provider $REMOTE \
     --default-remote-prefix $PREFIX \
     --latency-wait 300 \
+    --jobs 2 \
     --keep-remote
 
 # after
@@ -62,54 +64,7 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 
 rule target:
     input:
-        expand("{s}.clean.cram",s=config.get("samples",None)),
-
-# ------------------------------------------------------------------------------
-# Generics
-# ------------------------------------------------------------------------------
-
-rule index_cram:
-    input:
-        "{file}.cram"
-    output:
-        "{file}.cram.crai"
-    conda:
-        "environments/samtools.yaml"
-    shell:
-        "samtools index {input}"
-
-rule cram_to_bam:
-    """
-    A generic rule for converting cram to bam when downstream tools require bam.
-    """
-    input:
-        cram="{file}.cram",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
-    output:
-        temp("{file}.bam")
-    conda:
-        "environments/samtools.yaml"
-    shell:
-        "samtools view -b {input.cram} -o {output} -T {input.fa}"
-
-rule nsort_cram:
-    """
-    Generic rule for sorting a cram by read name.
-    """
-    input:
-        crm="{file}.cram",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
-    output:
-        "{file}.nsrt.cram"
-    conda:
-        "environments/samtools.yaml"
-    shell:
-        "samtools sort -n -O cram {input.crm} --reference {input.fa} -o {output} "
-        "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0"
+        expand("{s}_fps.bed",s=config.get("samples",None)),
 
 
 # ------------------------------------------------------------------------------
@@ -220,6 +175,10 @@ rule clean_reads:
         "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
         "--reference {input.fa} - {output}"
 
+# ------------------------------------------------------------------------------
+# Peak calling
+# ------------------------------------------------------------------------------
+
 rule call_peaks:
     """
     Call peaks using macs2 and shifting the reads to center on the cut site.
@@ -227,11 +186,9 @@ rule call_peaks:
     input:
         crm="{s}.clean.bam",
     output:
-        "{s}_summits.bed",
-        "{s}_peaks.narrowPeak"
-    group:
-        "regions"
-    shadow: "shallow"
+        #sum="{s}_summits.bed",
+        #np="{s}_peaks.narrowPeak",
+        mrg="{s}_peaks.mrg.bed"
     params:
         gs=hg38_gs
     conda:
@@ -240,29 +197,46 @@ rule call_peaks:
         1
     shell:
         "macs2 callpeak -t {input} -f BAM "
-        "--nomodel --shift -50 --keep-dup all "
-        "-g {params.gs} -n {wildcards.s} --call-summits"
+        "--nomodel --shift -15 --keep-dup all "
+        "-g {params.gs} -n {wildcards.s} --call-summits; "
+        #"bedtools sort -i {wildcards.s}_peaks.narrowPeak | bedtools merge > {output.mrg}"
+        #"mv {wildcards.s}_summits.bed {output.sum}; "
+        #"mv  {output.np}"
+        "bedtools sort -i {wildcards.s}_peaks.narrowPeak | bedtools merge > {output.mrg}; "
+
+# ------------------------------------------------------------------------------
+# Footprinting
+# ------------------------------------------------------------------------------
+
+rule call_footprints:
+    """
+    Call footprints.
+    """
+    input:
+        bam="{s}.clean.bam",
+        bai="{s}.clean.bam.bai",
+        bed="{s}_peaks.mrg.bed"
+    output:
+        "{s}_fps.bed"
+    shadow:
+        "shallow"
+    conda:
+        "environments/pydnase.yaml"
+    threads:
+        4
+    shell:
+        "wellington_footprints.py -p {threads} -A {input.bed} {input.bam} ./{wildcards.s}-fps/; "
+        "mv ./{wildcards.s}-fps/p\ value\ cutoffs/{input.bed}.WellingtonFootprints.-10.bed {output}"
 
 ## TODO
-# merge macs narrowpeaks
-# wellington_footprints.py -p 4 -A NA.merged.bed test.bam ./fps/
-# bamCoverage -b GM12878.clean.cram --Offset 4 6 --outFileName GM12878.cpm.bw --outFileFormat bigwig --binSize 50 --smoothLength 150 --verbose --normalizeUsing CPM
+# for sra, have a rule that pipes directly from sra-dump to bowtie2
 # function for making remote objects or checking if local and either making a remote object or a path including sra
-# either local alignment for soft clipping or restrict the fragment length further, probs local because
+#       Might have to prioritize an sra dump rule first?
 # rule to combine multiple fqs per end
-# rule to count kmers? motifs? maybe convert to fasta first?
-
-
-## IDEAS FOR EXTREME SPACE SAVINGS
-# subsampling option as part of bowtei2 alignment (ask to skip/only align n seqs)
-# filter further for mononucleosomal and subnucleosomal seqlength
-# i could also assemble consensus alleles if I did the entire fastq
-# convert to fasta then count kmers with existing tools? or just make a rust/nim tool
-
-
-
-
+# bamCoverage -b GM12878.clean.cram --Offset 4 6 --outFileName GM12878.cpm.bw --outFileFormat bigwig --binSize 50 --smoothLength 150 --verbose --normalizeUsing CPM
 # idr or normalize peak scores like the corces atac paper
+
+## DOWNSTREAM STUFF
 # choose best peaks from cohort
 # quantify and store as sparse hdf5 or something compressed
 # cuts per covered base per total reads
@@ -270,3 +244,65 @@ rule call_peaks:
 # frips
 # make a dataframe with metadata
 # methods: https://www.biostars.org/p/220268/
+
+# ------------------------------------------------------------------------------
+# Generics
+# ------------------------------------------------------------------------------
+
+rule index_cram:
+    input:
+        "{file}.cram"
+    output:
+        "{file}.cram.crai"
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools index {input}"
+
+rule index_bam:
+    input:
+        "{file}.bam"
+    output:
+        "{file}.bam.bai"
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools index {input}"
+
+
+rule cram_to_bam:
+    """
+    A generic rule for converting cram to bam when downstream tools require bam.
+    """
+    input:
+        cram="{file}.cram",
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
+    output:
+        temp("{file}.bam")
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools view -b {input.cram} -o {output} -T {input.fa}"
+
+rule nsort_cram:
+    """
+    Generic rule for sorting a cram by read name.
+    """
+    input:
+        crm="{file}.cram",
+        fa=hg38_fa,
+        fai=hg38_fai,
+        gzi=hg38_gzi,
+    output:
+        "{file}.nsrt.cram"
+    conda:
+        "environments/samtools.yaml"
+    shell:
+        "samtools sort -n -O cram {input.crm} --reference {input.fa} -o {output} "
+        "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0"
+
+# ------------------------------------------------------------------------------
+# HELP
+# ------------------------------------------------------------------------------
