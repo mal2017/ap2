@@ -27,6 +27,14 @@ hg38_idx_pfx = "seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_
 hg38_chroi_names = ["chr"+str(x) for x in range(1,23)] + ["chrX"]
 hg38_bl = GS.remote("seq-resources/NCBI-hg38/ENCFF419RSJ.bed.gz")
 hg38_gs = "2.7e9"
+
+"""
+# prereqs
+pip install kubernetes
+gcloud components install kubectl
+"""
+
+
 """
 CLUSTER_NAME=snk-cl2
 NODES=2
@@ -110,6 +118,9 @@ rule nsort_cram:
 
 #http://biolearnr.blogspot.com/2017/11/snakemake-using-inputoutput-values-in.html
 rule align_bt2:
+    """
+    Align reads with bowtie2.
+    """
     input:
         r1 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r1"]),
         r2 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r2"]),
@@ -125,8 +136,8 @@ rule align_bt2:
         4
     params:
         idx_pfx = hg38_idx_pfx,
-    group:
-        "preproc"
+    #group:
+    #    "preproc"
     shell:
         "bowtie2 --trim-to 3:30 --phred33 "
         "--no-discordant "
@@ -156,13 +167,16 @@ rule blacklist_filter_reads:
         "environments/bedtools.yaml"
     threads:
         1
-    group:
-        "preproc"
+    #group:
+    #    "preproc"
     shell:
         "CRAM_REFERENCE={input.fa} "
         "bedtools intersect -v -a {input.crm} -b {input.bl} > {output}"
 
 rule fix_mate_info:
+    """
+    Update mate info in aux tags and coord sort.
+    """
     input:
         crm="{s}.bl.nsrt.cram",
         fa=hg38_fa,
@@ -170,7 +184,7 @@ rule fix_mate_info:
         gzi=hg38_gzi,
     output:
         temp("{s}.fixm.cram")
-    group: "preproc"
+    #group: "preproc"
     conda:
         "environments/bowtie2.yaml"
     threads: 2
@@ -181,6 +195,9 @@ rule fix_mate_info:
         "-o {output} --reference {input.fa}"
 
 rule clean_reads:
+    """
+    Filter reads by MAPQ, canonical chromosomes, pcr dups.
+    """
     input:
         crm="{s}.fixm.cram",
         crai="{s}.fixm.cram.crai",
@@ -191,8 +208,7 @@ rule clean_reads:
         "{s}.clean.cram"
     params:
         chr=hg38_chroi_names
-    group:
-        "preproc"
+    #group: "preproc"
     conda:
         "environments/bowtie2.yaml"
     threads:
@@ -205,6 +221,9 @@ rule clean_reads:
         "--reference {input.fa} - {output}"
 
 rule call_peaks:
+    """
+    Call peaks using macs2 and shifting the reads to center on the cut site.
+    """
     input:
         crm="{s}.clean.bam",
     output:
