@@ -64,7 +64,7 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 
 rule target:
     input:
-        expand("{s}_fps.bed",s=config.get("samples",None)),
+        expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
 
 
 # ------------------------------------------------------------------------------
@@ -193,10 +193,11 @@ rule call_peaks:
         gs=hg38_gs
     conda:
         "environments/macs2.yaml"
+    shadow: "shallow"
     threads:
         1
     shell:
-        "macs2 callpeak -t {input} -f BAM "
+        "macs2 callpeak -t {input} -f BAM " # TODO right now this only takes the 1st read in the pair...
         "--nomodel --shift -15 --keep-dup all "
         "-g {params.gs} -n {wildcards.s} --call-summits; "
         #"bedtools sort -i {wildcards.s}_peaks.narrowPeak | bedtools merge > {output.mrg}"
@@ -225,8 +226,8 @@ rule call_footprints:
     threads:
         4
     shell:
-        "wellington_footprints.py -p {threads} -A {input.bed} {input.bam} ./{wildcards.s}-fps/; "
-        "mv ./{wildcards.s}-fps/p\ value\ cutoffs/{input.bed}.WellingtonFootprints.-10.bed {output}"
+        "wellington_footprints.py -p {threads} -A {input.bed} {input.bam} ./; "
+        "mv ./p\ value\ cutoffs/{input.bed}.WellingtonFootprints.-10.bed {output}"
 
 ## TODO
 # for sra, have a rule that pipes directly from sra-dump to bowtie2

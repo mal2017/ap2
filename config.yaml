@@ -1,12 +1,11 @@
-genome: NCBI-hg38 # one of NCBI-hg38, NCBI-mm10,
-blacklist: path/to/blacklist
+genome: NCBI-hg38 # one of NCBI-hg38, NCBI-mm10
 samples:
-  # hl60:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR321/003/SRR3213963/SRR3213963_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR321/003/SRR3213963/SRR3213963_2.fastq.gz
+  HL60:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR321/003/SRR3213963/SRR3213963_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR321/003/SRR3213963/SRR3213963_2.fastq.gz
   GM12878:
      fastq:
        r1:
