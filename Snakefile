@@ -65,6 +65,7 @@ gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
 rule target:
     input:
         expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
+        expand("{s}_fps.bed",s=config.get("samples",None))
 
 
 # ------------------------------------------------------------------------------
@@ -91,8 +92,6 @@ rule align_bt2:
         4
     params:
         idx_pfx = hg38_idx_pfx,
-    #group:
-    #    "preproc"
     shell:
         "bowtie2 --trim-to 3:30 --phred33 "
         "--no-discordant "
@@ -122,8 +121,6 @@ rule blacklist_filter_reads:
         "environments/bedtools.yaml"
     threads:
         1
-    #group:
-    #    "preproc"
     shell:
         "CRAM_REFERENCE={input.fa} "
         "bedtools intersect -v -a {input.crm} -b {input.bl} > {output}"
@@ -139,7 +136,6 @@ rule fix_mate_info:
         gzi=hg38_gzi,
     output:
         temp("{s}.fixm.cram")
-    #group: "preproc"
     conda:
         "environments/bowtie2.yaml"
     threads: 2
@@ -163,7 +159,6 @@ rule clean_reads:
         "{s}.clean.cram"
     params:
         chr=hg38_chroi_names
-    #group: "preproc"
     conda:
         "environments/bowtie2.yaml"
     threads:
