@@ -3,6 +3,12 @@ from os.path import split as pathsplit
 import subprocess
 from snakemake.remote.GS import RemoteProvider as GSRemoteProvider
 from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
+import sys
+
+if not sys.warnoptions:
+    import warnings
+    warnings.simplefilter("ignore")
+
 
 # info
 __author__ = "Matt Lawlor"
@@ -29,40 +35,11 @@ hg38_chroi_names = ["chr"+str(x) for x in range(1,23)] + ["chrX"]
 hg38_bl = GS.remote("seq-resources/NCBI-hg38/ENCFF419RSJ.bed.gz")
 hg38_gs = "2.7e9"
 
-"""
-# prereqs
-pip install kubernetes
-gcloud components install kubectl
-"""
-
-
-"""
-CLUSTER_NAME=snk-cl2
-NODES=2
-ZONE=us-central1-a
-REMOTE=GS
-PREFIX=archibald
-MACHINE_TYPE=n1-standard-4
-gcloud container clusters create $CLUSTER_NAME \
-    --num-nodes=$NODES \
-    --scopes storage-rw \
-    --machine-type=$MACHINE_TYPE \
-    --zone $ZONE
-gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
-
-snakemake --kubernetes --use-conda \
-    --default-remote-provider $REMOTE \
-    --default-remote-prefix $PREFIX \
-    --latency-wait 300 \
-    --jobs 2 \
-    --keep-remote
-
-# after
-gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
-"""
-
 
 rule target:
+    """
+    Generate footprints, peaks, and a cut matrix from all samples in the manifest.
+    """
     input:
         expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
         expand("{s}_fps.bed",s=config.get("samples",None))
@@ -221,8 +198,8 @@ rule call_footprints:
     threads:
         4
     shell:
-        "wellington_footprints.py -p {threads} -A {input.bed} {input.bam} ./; "
-        "mv ./p\ value\ cutoffs/{input.bed}.WellingtonFootprints.-10.bed {output}"
+        "wellington_footprints.py -p {threads} -A {input.bed} {input.bam} ./{wildcards.s}-fp-tmp; "
+        "mv ./{wildcards.s}-fp-tmp/p\ value\ cutoffs/{input.bed}.WellingtonFootprints.-10.bed {output}"
 
 ## TODO
 # for sra, have a rule that pipes directly from sra-dump to bowtie2
@@ -302,3 +279,45 @@ rule nsort_cram:
 # ------------------------------------------------------------------------------
 # HELP
 # ------------------------------------------------------------------------------
+
+rule help:
+    shell:
+        """
+        echo '
+        ===== google cloud =====
+
+        # install prereqs
+        pip install kubernetes
+        gcloud components install kubectl
+
+        # set up cluster variables
+        CLUSTER_NAME=snk-cl2
+        NODES=2
+        ZONE=us-central1-a
+        REMOTE=GS
+        PREFIX=archibald
+        MACHINE_TYPE=n1-standard-4
+
+        # initialize cluster
+        gcloud container clusters create $CLUSTER_NAME
+            --num-nodes=$NODES
+            --scopes storage-rw
+            --machine-type=$MACHINE_TYPE
+            --zone $ZONE
+
+        # register cluster info
+        gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
+
+        # run snakemake
+        snakemake --kubernetes --use-conda
+            --default-remote-provider $REMOTE
+            --default-remote-prefix $PREFIX
+            --latency-wait 300
+            --jobs 2
+            --keep-remote
+
+        # shut down your cluster
+        gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
+
+        '
+        """
