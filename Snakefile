@@ -197,9 +197,13 @@ rule call_footprints:
         "environments/pydnase.yaml"
     threads:
         4
+    params:
+        odir= "{s}-fp-tmp/"
     shell:
-        "wellington_footprints.py -p {threads} -A {input.bed} {input.bam} ./{wildcards.s}-fp-tmp; "
-        "mv ./{wildcards.s}-fp-tmp/p\ value\ cutoffs/{input.bed}.WellingtonFootprints.-10.bed {output}"
+        "rm -rf {params.odir} && mkdir {params.odir} && "
+        "wellington_footprints.py -p {threads} -o {wildcards.s} -A {input.bed} {input.bam} {params.odir}; "
+        "mv {params.odir}/p\ value\ cutoffs/{wildcards.s}.WellingtonFootprints.-10.bed {output}; "
+        "rm -rf {params.odir}"
 
 ## TODO
 # for sra, have a rule that pipes directly from sra-dump to bowtie2
