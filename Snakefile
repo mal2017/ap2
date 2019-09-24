@@ -64,7 +64,7 @@ rule align_bt2:
     output:
         temp("{s}.raw.cram")
     conda:
-        "environments/bowtie2.yaml"
+        "envs/bowtie2.yaml"
     threads:
         4
     params:
@@ -95,7 +95,7 @@ rule blacklist_filter_reads:
     output:
         temp("{s}.bl.cram")
     conda:
-        "environments/bedtools.yaml"
+        "envs/bedtools.yaml"
     threads:
         1
     shell:
@@ -114,7 +114,7 @@ rule fix_mate_info:
     output:
         temp("{s}.fixm.cram")
     conda:
-        "environments/bowtie2.yaml"
+        "envs/bowtie2.yaml"
     threads: 2
     shell:
         "samtools fixmate -m --reference {input.fa} {input.crm} - | "
@@ -137,7 +137,7 @@ rule clean_reads:
     params:
         chr=hg38_chroi_names
     conda:
-        "environments/bowtie2.yaml"
+        "envs/bowtie2.yaml"
     threads:
         2
     shell:
@@ -164,7 +164,7 @@ rule call_peaks:
     params:
         gs=hg38_gs
     conda:
-        "environments/macs2.yaml"
+        "envs/macs2.yaml"
     shadow: "shallow"
     threads:
         1
@@ -194,7 +194,7 @@ rule call_footprints:
     shadow:
         "shallow"
     conda:
-        "environments/pydnase.yaml"
+        "envs/pydnase.yaml"
     threads:
         4
     params:
@@ -204,6 +204,25 @@ rule call_footprints:
         "wellington_footprints.py -p {threads} -o {wildcards.s} -A {input.bed} {input.bam} {params.odir}; "
         "mv {params.odir}/p\ value\ cutoffs/{wildcards.s}.WellingtonFootprints.-10.bed {output}; "
         "rm -rf {params.odir}"
+
+# ------------------------------------------------------------------------------
+# Footprinting
+# ------------------------------------------------------------------------------
+
+rule make_bigwigs:
+    input:
+        crm="{s}.clean.cram",
+        crai="{s}.clean.cram.crai"
+    output:
+        "{s}.cpm.bw"
+    config:
+        "envs/deeptools.yaml"
+    input:
+        "bamCoverage -b GM12878.clean.cram "
+        "--Offset 4 6 --outFileName GM12878.cpm.bw "
+        "--outFileFormat bigwig "
+        "--binSize 50 --smoothLength 150 "
+        "--verbose --normalizeUsing CPM"
 
 ## TODO
 # for sra, have a rule that pipes directly from sra-dump to bowtie2
@@ -232,7 +251,7 @@ rule index_cram:
     output:
         "{file}.cram.crai"
     conda:
-        "environments/samtools.yaml"
+        "envs/samtools.yaml"
     shell:
         "samtools index {input}"
 
@@ -242,7 +261,7 @@ rule index_bam:
     output:
         "{file}.bam.bai"
     conda:
-        "environments/samtools.yaml"
+        "envs/samtools.yaml"
     shell:
         "samtools index {input}"
 
@@ -259,7 +278,7 @@ rule cram_to_bam:
     output:
         temp("{file}.bam")
     conda:
-        "environments/samtools.yaml"
+        "envs/samtools.yaml"
     shell:
         "samtools view -b {input.cram} -o {output} -T {input.fa}"
 
@@ -275,7 +294,7 @@ rule nsort_cram:
     output:
         "{file}.nsrt.cram"
     conda:
-        "environments/samtools.yaml"
+        "envs/samtools.yaml"
     shell:
         "samtools sort -n -O cram {input.crm} --reference {input.fa} -o {output} "
         "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0"
