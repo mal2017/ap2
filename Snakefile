@@ -215,11 +215,11 @@ rule make_bigwigs:
         crai="{s}.clean.cram.crai"
     output:
         "{s}.cpm.bw"
-    config:
+    conda:
         "envs/deeptools.yaml"
     input:
-        "bamCoverage -b GM12878.clean.cram "
-        "--Offset 4 6 --outFileName GM12878.cpm.bw "
+        "bamCoverage -b {input.crm} "
+        "--Offset 4 6 --outFileName {output} "
         "--outFileFormat bigwig "
         "--binSize 50 --smoothLength 150 "
         "--verbose --normalizeUsing CPM"
