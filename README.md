@@ -4,7 +4,10 @@
 
 1. Clone or download the repo.
 2. Modify `config.yaml` to include your data.
-3. From the repo repository run ```bash snakemake```
+3. From the repo repository run:
+```bash
+snakemake --configfile config.yaml
+```
 
 ## to get help
 
