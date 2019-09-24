@@ -1,14 +1,37 @@
-genome: NCBI-hg38 # one of NCBI-hg38, NCBI-mm10
+genome: NCBI-hg38
+BT2_FILES:
+  - gs://seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.1.bt2
+  - gs://seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.2.bt2
+  - gs://seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.3.bt2
+  - gs://seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.4.bt2
+  - gs://seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.rev.1.bt2
+  - gs://seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.rev.2.bt2
+BT2_IDX_PFX: seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index
+GENOME_FA: gs://seq-resources/NCBI-hg38/hg38.fa.gz
+GENOME_FAI: gs://seq-resources/NCBI-hg38/hg38.fa.gz.fai
+GENOME_GZI: gs://seq-resources/NCBI-hg38/hg38.fa.gz.gzi
+GENOME_BL: gs://seq-resources/NCBI-hg38/ENCFF419RSJ.bed.gz
+GENOME_SIZE: 2.7e9
+GENOME_CHR: chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX
+
+
+
 samples:
-  HL60:
+  HL60_ATAC_01:
     fastq:
       r1:
         - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR321/003/SRR3213963/SRR3213963_1.fastq.gz
       r2:
         - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR321/003/SRR3213963/SRR3213963_2.fastq.gz
-  GM12878:
+  GM12878_ATAC_01:
      fastq:
        r1:
          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR891/SRR891275/SRR891275_1.fastq.gz
        r2:
          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR891/SRR891275/SRR891275_2.fastq.gz
+  MOLM14_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR393/007/SRR3932757/SRR3932757_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR393/007/SRR3932757/SRR3932757_2.fastq.gz

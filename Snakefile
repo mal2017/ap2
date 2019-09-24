@@ -11,7 +11,6 @@ if not sys.warnoptions:
     import warnings
     warnings.simplefilter("ignore")
 
-
 # info
 __author__ = "Matt Lawlor"
 
@@ -23,16 +22,18 @@ S3 = S3RemoteProvider()
 HTTP = HTTPRemoteProvider()
 configfile: "config.yaml"
 
-# CONTSTANTS TODO integrate these
+# PARAMS TODO integrate these
 BT2_TRIM_SIZE = 30
 MACS2_SHIFT_SIZE = 15
+PYDNASE_PVAL = -3
+MAPQ_CUTOFF = 30
 
-
+# DETERMINE REMOTE OR LOCAL RESOURCE
 def determine_resource(path):
     if "gs://" in path:
          return GS.remote(path.replace("gs://",""))
     elif "ftp://" in path:
-         return FTP.remote(path.replace("ftp://",""))
+         return FTP.remote(path)
     elif "s3://" in path:
          return S3.remote(path.replace("s3://",""))
     elif "http://" in path:
@@ -42,16 +43,15 @@ def determine_resource(path):
     else:
         return path
 
-# REMOTE RESOURCES TODO deal with this elegantly - allow mouse as well
-hg38_idx_files = ["seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index." + x for x in ["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"]]
-hg38_idx_paths = [GS.remote(y) for y in hg38_idx_files]
-hg38_fa = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz")
-hg38_fai = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz.fai")
-hg38_gzi = GS.remote("seq-resources/NCBI-hg38/hg38.fa.gz.gzi")
-hg38_idx_pfx = "seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index"
-hg38_chroi_names = ["chr"+str(x) for x in range(1,23)] + ["chrX"]
-hg38_bl = GS.remote("seq-resources/NCBI-hg38/ENCFF419RSJ.bed.gz")
-hg38_gs = "2.7e9"
+
+# REMOTE RESOURCES
+bt2_idx_paths = [determine_resource(y) for y in config.get("BT2_FILES",None)]
+genome_fa = determine_resource(config.get("GENOME_FA",None))
+genome_fai = determine_resource(config.get("GENOME_FAI",None))
+genome_gzi = determine_resource(config.get("GENOME_GZI",None))
+genome_chroi_names = config.get("GENOME_CHR",None).split(",")
+genome_bl = determine_resource(config.get("GENOME_BL",None))
+genome_size = config.get("GENOME_SIZE",None)
 
 
 rule target:
@@ -74,12 +74,12 @@ rule align_bt2:
     Align reads with bowtie2.
     """
     input:
-        r1 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r1"]),
-        r2 = lambda wc: FTP.remote(config["samples"][wc.s]["fastq"]["r2"]),
-        idx = hg38_idx_paths,
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
+        r1 = lambda wc: [determine_resource(x) for x in config["samples"][wc.s]["fastq"]["r1"]],
+        r2 = lambda wc: [determine_resource(x) for x in config["samples"][wc.s]["fastq"]["r2"]],
+        idx = bt2_idx_paths,
+        fa=genome_fa,
+        fai=genome_fai,
+        gzi=genome_gzi,
     output:
         temp("{s}.raw.cram")
     conda:
@@ -87,7 +87,7 @@ rule align_bt2:
     threads:
         4
     params:
-        idx_pfx = hg38_idx_pfx,
+        idx_pfx = config.get("BT2_IDX_PFX",None),
     shell:
         "bowtie2 --trim-to 3:30 --phred33 "
         "--no-discordant "
@@ -106,10 +106,10 @@ rule blacklist_filter_reads:
     """
     input:
         crm=rules.align_bt2.output,
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
-        bl=hg38_bl,
+        fa=genome_fa,
+        fai=genome_fai,
+        gzi=genome_gzi,
+        bl=genome_bl,
         crai="{s}.raw.cram.crai"
     output:
         temp("{s}.bl.cram")
@@ -127,9 +127,9 @@ rule fix_mate_info:
     """
     input:
         crm="{s}.bl.nsrt.cram",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
+        fa=genome_fa,
+        fai=genome_fai,
+        gzi=genome_gzi,
     output:
         temp("{s}.fixm.cram")
     conda:
@@ -148,13 +148,13 @@ rule clean_reads:
     input:
         crm="{s}.fixm.cram",
         crai="{s}.fixm.cram.crai",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
+        fa=genome_fa,
+        fai=genome_fai,
+        gzi=genome_gzi,
     output:
         "{s}.clean.cram"
     params:
-        chr=hg38_chroi_names
+        chr=genome_chroi_names
     conda:
         "envs/bowtie2.yaml"
     threads:
@@ -181,7 +181,7 @@ rule call_peaks:
         #np="{s}_peaks.narrowPeak",
         mrg="{s}_peaks.mrg.bed"
     params:
-        gs=hg38_gs
+        gs=genome_size
     conda:
         "envs/macs2.yaml"
     shadow: "shallow"
@@ -291,9 +291,9 @@ rule cram_to_bam:
     """
     input:
         cram="{file}.cram",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
+        fa=genome_fa,
+        fai=genome_fai,
+        gzi=genome_gzi,
     output:
         temp("{file}.bam")
     conda:
@@ -307,9 +307,9 @@ rule nsort_cram:
     """
     input:
         crm="{file}.cram",
-        fa=hg38_fa,
-        fai=hg38_fai,
-        gzi=hg38_gzi,
+        fa=genome_fa,
+        fai=genome_fai,
+        gzi=genome_gzi,
     output:
         "{file}.nsrt.cram"
     conda:
