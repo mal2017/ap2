@@ -1,2 +1,4 @@
 .snakemake
 archibald
+seq-resources
+ftp*

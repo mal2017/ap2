@@ -217,7 +217,7 @@ rule make_bigwigs:
         "{s}.cpm.bw"
     conda:
         "envs/deeptools.yaml"
-    input:
+    shell:
         "bamCoverage -b {input.crm} "
         "--Offset 4 6 --outFileName {output} "
         "--outFileFormat bigwig "
@@ -331,7 +331,7 @@ rule help:
         # register cluster info
         gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
 
-        # run snakemake
+
         snakemake --kubernetes --use-conda
             --default-remote-provider $REMOTE
             --default-remote-prefix $PREFIX
