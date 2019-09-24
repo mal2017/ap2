@@ -3,6 +3,8 @@ from os.path import split as pathsplit
 import subprocess
 from snakemake.remote.GS import RemoteProvider as GSRemoteProvider
 from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
+from snakemake.remote.S3 import RemoteProvider as S3RemoteProvider
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 import sys
 
 if not sys.warnoptions:
@@ -17,12 +19,28 @@ __author__ = "Matt Lawlor"
 shell.executable("/bin/bash")
 GS = GSRemoteProvider()
 FTP = FTPRemoteProvider()
+S3 = S3RemoteProvider()
+HTTP = HTTPRemoteProvider()
 configfile: "config.yaml"
 
 # CONTSTANTS TODO integrate these
 BT2_TRIM_SIZE = 30
 MACS2_SHIFT_SIZE = 15
 
+
+def determine_resource(path):
+    if "gs://" in path:
+         return GS.remote(path.replace("gs://",""))
+    elif "ftp://" in path:
+         return FTP.remote(path.replace("ftp://",""))
+    elif "s3://" in path:
+         return S3.remote(path.replace("s3://",""))
+    elif "http://" in path:
+         return HTTP.remote(path.replace("http://",""))
+    elif "https://" in path:
+         return HTTP.remote(path.replace("https://",""))
+    else:
+        return path
 
 # REMOTE RESOURCES TODO deal with this elegantly - allow mouse as well
 hg38_idx_files = ["seq-resources/NCBI-hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index." + x for x in ["1.bt2","2.bt2","3.bt2","4.bt2","rev.1.bt2","rev.2.bt2"]]
@@ -42,7 +60,8 @@ rule target:
     """
     input:
         expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
-        expand("{s}_fps.bed",s=config.get("samples",None))
+        expand("{s}_fps.bed",s=config.get("samples",None)),
+        expand("{s}.cpm.bw",s=config.get("samples",None)),
 
 
 # ------------------------------------------------------------------------------
@@ -201,8 +220,8 @@ rule call_footprints:
         odir= "{s}-fp-tmp/"
     shell:
         "rm -rf {params.odir} && mkdir {params.odir} && "
-        "wellington_footprints.py -p {threads} -o {wildcards.s} -A {input.bed} {input.bam} {params.odir}; "
-        "mv {params.odir}/p\ value\ cutoffs/{wildcards.s}.WellingtonFootprints.-10.bed {output}; "
+        "wellington_footprints.py -p {threads} -o {wildcards.s} -pv -3 -A {input.bed} {input.bam} {params.odir}; "
+        "mv {params.odir}/p\ value\ cutoffs/{wildcards.s}.WellingtonFootprints.-3.bed {output}; "
         "rm -rf {params.odir}"
 
 # ------------------------------------------------------------------------------
