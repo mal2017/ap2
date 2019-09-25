@@ -86,7 +86,7 @@ rule align_bt2:
     conda:
         "envs/bowtie2.yaml"
     threads:
-        4
+        2
     params:
         idx_pfx = config.get("BT2_IDX_PFX",None),
         trim=BT2_TRIM_SIZE,
@@ -221,7 +221,7 @@ rule call_footprints:
     conda:
         "envs/pydnase.yaml"
     threads:
-        4
+        2
     params:
         odir= "{s}-fp-tmp/",
         pv = PYDNASE_PVAL
