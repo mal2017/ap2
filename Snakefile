@@ -7,11 +7,12 @@ from snakemake.remote.S3 import RemoteProvider as S3RemoteProvider
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 import sys
 
+# Block annoying warnings
 if not sys.warnoptions:
     import warnings
     warnings.simplefilter("ignore")
 
-# info
+# META
 __author__ = "Matt Lawlor"
 
 # SETUP
@@ -22,11 +23,14 @@ S3 = S3RemoteProvider()
 HTTP = HTTPRemoteProvider()
 configfile: "config.yaml"
 
-# PARAMS TODO integrate these
-BT2_TRIM_SIZE = 30
-MACS2_SHIFT_SIZE = 15
-PYDNASE_PVAL = -3
-MAPQ_CUTOFF = 30
+# PARAMS
+BT2_TRIM_SIZE = config.get("BT2_TRIM_SIZE",30)
+BT2_MAX_ISIZE = config.get("BT2_MAX_ISIZE",800)
+MACS2_SHIFT_SIZE = config.get("MACS2_SHIFT_SIZE",-100)
+MACS2_EXTENSION = config.get("MACS2_EXTENSION",200)
+PYDNASE_PVAL = config.get("PYDNASE_PVAL",-2)
+MAPQ_CUTOFF = config.get("MAPQ_CUTOFF",30)
+GENOME_SIZE = config.get("GENOME_SIZE",None)
 
 # DETERMINE REMOTE OR LOCAL RESOURCE
 def determine_resource(path):
@@ -43,7 +47,6 @@ def determine_resource(path):
     else:
         return path
 
-
 # REMOTE RESOURCES
 bt2_idx_paths = [determine_resource(y) for y in config.get("BT2_FILES",None)]
 genome_fa = determine_resource(config.get("GENOME_FA",None))
@@ -51,7 +54,6 @@ genome_fai = determine_resource(config.get("GENOME_FAI",None))
 genome_gzi = determine_resource(config.get("GENOME_GZI",None))
 genome_chroi_names = config.get("GENOME_CHR",None).split(",")
 genome_bl = determine_resource(config.get("GENOME_BL",None))
-genome_size = config.get("GENOME_SIZE",None)
 
 
 rule target:
@@ -62,7 +64,6 @@ rule target:
         expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
         expand("{s}_fps.bed",s=config.get("samples",None)),
         expand("{s}.cpm.bw",s=config.get("samples",None)),
-
 
 # ------------------------------------------------------------------------------
 # Preproc
@@ -88,17 +89,18 @@ rule align_bt2:
         4
     params:
         idx_pfx = config.get("BT2_IDX_PFX",None),
+        trim=BT2_TRIM_SIZE,
+        isize=BT2_MAX_ISIZE
     shell:
-        "bowtie2 --trim-to 3:30 --phred33 "
+        "bowtie2 --trim-to 3:{params.trim} --phred33 "
         "--no-discordant "
         "--no-unal "
-        "-k 1 -X 800 "
+        "-k 1 -X {params.isize} "
         "-x {params.idx_pfx} -1 {input.r1} -2 {input.r2} |"
         #"--skip 1000000 "
         #"-u 10000000 | "
         "samtools sort -O cram --output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
         "-o {output} --reference {input.fa}"
-
 
 rule blacklist_filter_reads:
     """
@@ -154,13 +156,14 @@ rule clean_reads:
     output:
         "{s}.clean.cram"
     params:
-        chr=genome_chroi_names
+        chr=genome_chroi_names,
+        mapq=MAPQ_CUTOFF,
     conda:
         "envs/bowtie2.yaml"
     threads:
         2
     shell:
-        "samtools view -u -q 30 "
+        "samtools view -u -q {params.mapq} "
         "--reference {input.fa} {input.crm} {params.chr} | "
         "samtools markdup -r "
         "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
@@ -181,7 +184,9 @@ rule call_peaks:
         #np="{s}_peaks.narrowPeak",
         mrg="{s}_peaks.mrg.bed"
     params:
-        gs=genome_size
+        gs=GENOME_SIZE,
+        shift=MACS2_SHIFT_SIZE,
+        ext=MACS2_EXTENSION
     conda:
         "envs/macs2.yaml"
     shadow: "shallow"
@@ -189,7 +194,8 @@ rule call_peaks:
         1
     shell:
         "macs2 callpeak -t {input} -f BAM " # TODO right now this only takes the 1st read in the pair...
-        "--nomodel --shift -15 --keep-dup all "
+        "--nomodel --shift {params.shift} --keep-dup all "
+        "--extsize {params.ext} "
         "-g {params.gs} -n {wildcards.s} --call-summits; "
         #"bedtools sort -i {wildcards.s}_peaks.narrowPeak | bedtools merge > {output.mrg}"
         #"mv {wildcards.s}_summits.bed {output.sum}; "
@@ -217,11 +223,12 @@ rule call_footprints:
     threads:
         4
     params:
-        odir= "{s}-fp-tmp/"
+        odir= "{s}-fp-tmp/",
+        pv = PYDNASE_PVAL
     shell:
         "rm -rf {params.odir} && mkdir {params.odir} && "
-        "wellington_footprints.py -p {threads} -o {wildcards.s} -pv -3 -A {input.bed} {input.bam} {params.odir}; "
-        "mv {params.odir}/p\ value\ cutoffs/{wildcards.s}.WellingtonFootprints.-3.bed {output}; "
+        "wellington_footprints.py -p {threads} -o {wildcards.s} -pv {params.pv} -A {input.bed} {input.bam} {params.odir}; "
+        "mv {params.odir}/p\ value\ cutoffs/{wildcards.s}.WellingtonFootprints.{params.pv}.bed {output}; "
         "rm -rf {params.odir}"
 
 # ------------------------------------------------------------------------------
