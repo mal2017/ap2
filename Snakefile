@@ -62,6 +62,7 @@ rule target:
     """
     input:
         expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
+        expand("{s}_smts.bed",s=config.get("samples",None)),
         expand("{s}_fps.bed",s=config.get("samples",None)),
         expand("{s}.cpm.bw",s=config.get("samples",None)),
 
@@ -180,7 +181,7 @@ rule call_peaks:
     input:
         crm="{s}.clean.bam",
     output:
-        #sum="{s}_summits.bed",
+        sum="{s}_smts.bed",
         #np="{s}_peaks.narrowPeak",
         mrg="{s}_peaks.mrg.bed"
     params:
@@ -193,14 +194,12 @@ rule call_peaks:
     threads:
         1
     shell:
-        "macs2 callpeak -t {input} -f BAM " # TODO right now this only takes the 1st read in the pair...
+        "macs2 callpeak -t {input} -f BAM " # TODO right now this only takes the 1st read in the pair, which is find for now...
         "--nomodel --shift {params.shift} --keep-dup all "
         "--extsize {params.ext} "
         "-g {params.gs} -n {wildcards.s} --call-summits; "
-        #"bedtools sort -i {wildcards.s}_peaks.narrowPeak | bedtools merge > {output.mrg}"
-        #"mv {wildcards.s}_summits.bed {output.sum}; "
-        #"mv  {output.np}"
         "bedtools sort -i {wildcards.s}_peaks.narrowPeak | bedtools merge > {output.mrg}; "
+        "cp {wildcards.s}_summits.bed {output.sum}"
 
 # ------------------------------------------------------------------------------
 # Footprinting
