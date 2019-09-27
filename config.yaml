@@ -40,3 +40,64 @@ samples:
           - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR393/007/SRR3932757/SRR3932757_1.fastq.gz
         r2:
           - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR393/007/SRR3932757/SRR3932757_2.fastq.gz
+  MOLM13_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR701/003/SRR7010323/SRR7010323_1.fastq.gz
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR701/003/SRR7010323/SRR7010323_2.fastq.gz
+
+  # https://doi.org/10.1101/605642
+  JURKAT_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/008/SRR8820028/SRR8820028_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/008/SRR8820028/SRR8820028_2.fastq.gz
+  MOLT4_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/001/SRR8820031/SRR8820031_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/001/SRR8820031/SRR8820031_2.fastq.gz
+  RPMI8402_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/004/SRR8820034/SRR8820034_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/004/SRR8820034/SRR8820034_2.fastq.gz
+
+  CCRFCEM_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/005/SRR8820035/SRR8820035_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/005/SRR8820035/SRR8820035_2.fastq.gz
+
+  K562_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/006/SRR8820036/SRR8820036_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/006/SRR8820036/SRR8820036_2.fastq.gz
+
+  MV411_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/002/SRR8820042/SRR8820042_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/002/SRR8820042/SRR8820042_2.fastq.gz
+
+  KLC_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/006/SRR8820046/SRR8820046_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/006/SRR8820046/SRR8820046_2.fastq.gz
+
+  GM20390_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/000/SRR8820050/SRR8820050_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/000/SRR8820050/SRR8820050_2.fastq.gz
