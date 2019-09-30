@@ -44,7 +44,7 @@ samples:
       fastq:
         r1:
           - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR701/003/SRR7010323/SRR7010323_1.fastq.gz
-        r1:
+        r2:
           - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR701/003/SRR7010323/SRR7010323_2.fastq.gz
 
   # https://doi.org/10.1101/605642
@@ -101,3 +101,28 @@ samples:
           - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/000/SRR8820050/SRR8820050_1.fastq.gz
         r2:
           - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR882/000/SRR8820050/SRR8820050_2.fastq.gz
+
+  TUMOR73_TALL_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/000/SRR8361360/SRR8361360_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/000/SRR8361360/SRR8361360_2.fastq.gz
+  TUMOR67_TALL_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/001/SRR8361361/SRR8361361_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/001/SRR8361361/SRR8361361_2.fastq.gz
+  TUMOR69_TALL_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8361362/SRR8361362_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/002/SRR8361362/SRR8361362_2.fastq.gz
+  DP3MINUS_ATAC_01:
+      fastq:
+        r1:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8361363/SRR8361363_1.fastq.gz
+        r2:
+          - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8361363/SRR8361363_2.fastq.gz
