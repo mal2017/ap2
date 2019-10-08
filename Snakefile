@@ -340,29 +340,28 @@ rule help:
 
         # set up cluster variables
         CLUSTER_NAME=snk-cl2
-        NODES=2
+        NODES=6
         ZONE=us-central1-a
         REMOTE=GS
         PREFIX=archibald
         MACHINE_TYPE=n1-standard-4
 
         # initialize cluster
-        gcloud container clusters create $CLUSTER_NAME
-            --num-nodes=$NODES
-            --scopes storage-rw
-            --machine-type=$MACHINE_TYPE
-            --zone $ZONE
+        gcloud container clusters create $CLUSTER_NAME \
+            --num-nodes=$NODES \
+            --scopes storage-rw \
+            --machine-type=$MACHINE_TYPE \
+            --zone $ZONE \
 
         # register cluster info
         gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
 
 
-        snakemake --kubernetes --use-conda
-            --default-remote-provider $REMOTE
-            --default-remote-prefix $PREFIX
-            --latency-wait 300
-            --jobs 2
-            --keep-remote
+        snakemake --kubernetes --use-conda \
+            --default-remote-provider $REMOTE \
+            --default-remote-prefix $PREFIX \
+            --latency-wait 300 \
+            --jobs 12
 
         # shut down your cluster
         gcloud container clusters delete $CLUSTER_NAME --zone $ZONE

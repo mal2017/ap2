@@ -1,0 +1,771 @@
+
+4983_1A:
+  condition:
+    - HSC
+  donor: 4983
+
+4983_2A:
+  condition:
+    - MPP
+  donor: 4983
+
+4983_3A:
+  condition:
+    - LMPP
+  donor: 4983
+
+4983_4A:
+  condition:
+    - CMP
+  donor: 4983
+
+4983_4B:
+  condition:
+    - CMP
+  donor: 4983
+
+4983_5A:
+  condition:
+    - GMP
+  donor: 4983
+
+4983_5B:
+  condition:
+    - GMP
+  donor: 4983
+
+4983_6A:
+  condition:
+    - MEP
+  donor: 4983
+
+4983_6B:
+  condition:
+    - MEP
+  donor: 4983
+
+4983_7A:
+  condition:
+    - Mono
+  donor: 4983
+
+4983_7B:
+  condition:
+    - Mono
+  donor: 4983
+
+
+6792_1A:
+  condition:
+    - HSC
+  donor: 6792
+
+
+6792_1B:
+  condition:
+    - HSC
+  donor: 6792
+
+
+6792_2A:
+  condition:
+    - MPP
+  donor: 6792
+
+
+6792_3A:
+  condition:
+    - LMPP
+  donor: 6792
+
+
+6792_4A:
+  condition:
+    - CMP
+  donor: 6792
+
+
+6792_4B:
+  condition:
+    - CMP
+  donor: 6792
+
+
+6792_5A:
+  condition:
+    - GMP
+  donor: 6792
+
+
+6792_5B:
+  condition:
+    - GMP
+  donor: 6792
+
+
+6792_6A:
+  condition:
+    - MEP
+  donor: 6792
+
+
+6792_6B:
+  condition:
+    - MEP
+  donor: 6792
+
+
+6792_7A:
+  condition:
+    - Mono
+  donor: 6792
+
+
+6792_7B:
+  condition:
+    - Mono
+  donor: 6792
+
+
+BM_CD34_1:
+  condition:
+    - CD34_BM
+  donor: 7291
+
+
+BM_CD34_2:
+  condition:
+    - CD34_BM
+  donor: 7292
+
+
+CB102_CD34_150627:
+  condition:
+    - CD34_CB
+  donor: 1020
+
+
+Donor1022_Bcell_13_150120:
+  condition:
+    - Bcell
+  donor: 1022
+
+
+
+Donor1022_CD4_9_150120:
+  condition:
+    - CD4Tcell
+  donor: 1022
+
+
+Donor1022_CD8_10_150120:
+  condition:
+    - CD8Tcell
+  donor: 1022
+
+
+Donor1022_Nkcell_11_150120:
+  condition:
+    - Nkcell
+  donor: 1022
+
+
+Donor2596_CD4_9A_150303:
+  condition:
+    - CD4Tcell
+  donor: 2596
+
+
+Donor2596_CD8_10B_150303:
+  condition:
+    - CD8Tcell
+  donor: 2596
+
+
+Donor2596_CLP_14A_150303:
+  condition:
+    - CLP
+  donor: 2596
+
+
+Donor2596_CLP_14B_150303:
+  condition:
+    - CLP
+  donor: 2596
+
+
+Donor2596_CMP_4A_150303:
+  condition:
+    - CMP
+  donor: 2596
+
+
+Donor2596_CMP_4B_150303:
+  condition:
+    - CMP
+  donor: 2596
+
+
+Donor2596_Erythroblast_15A_150303:
+  condition:
+    - Ery
+  donor: 2596
+
+
+Donor2596_Erythroblast_15B_150303:
+  condition:
+    - Ery
+  donor: 2596
+
+
+Donor2596_Erythroblast_15C_150303:
+  condition:
+    - Ery
+  donor: 2596
+
+
+Donor2596_GMP_5A_150303:
+  condition:
+    - GMP
+  donor: 2596
+
+
+Donor2596_HSC_1A_150303:
+  condition:
+    - HSC
+  donor: 2596
+
+
+Donor2596_HSC_1B_150303:
+  condition:
+    - HSC
+  donor: 2596
+
+
+Donor2596_MEP_6A_150303:
+  condition:
+    - MEP
+  donor: 2596
+
+
+Donor2596_MPP_2A_150303:
+  condition:
+    - MPP
+  donor: 2596
+
+
+Donor2596_MPP_2B_150303:
+  condition:
+    - MPP
+  donor: 2596
+
+
+Donor2596_NK_11B_150303:
+  condition:
+    - Nkcell
+  donor: 2596
+
+
+Donor2596_Nkcell_11A_150303:
+  condition:
+    - Nkcell
+  donor: 2596
+
+
+Donor4983_Bcell_13A_150120:
+  condition:
+    - Bcell
+  donor: 4983
+
+
+Donor4983_CD4_9A_150120:
+  condition:
+    - CD4Tcell
+  donor: 4983
+
+
+Donor4983_CD8_10A_150120:
+  condition:
+    - CD8TCell
+  donor: 4983
+
+
+Donor4983_Nkcell_11A_150120:
+  condition:
+    - Nkcell
+  donor: 4983
+
+
+Donor5483_Bcell_13A_150305:
+  condition:
+    - Bcell
+  donor: 5483
+
+
+Donor5483_CD4_9A_150305:
+  condition:
+    - CD4Tcell
+  donor: 5483
+
+
+Donor5483_CD4_9B_150305:
+  condition:
+    - CD4Tcell
+  donor: 5483
+
+
+Donor5483_CD8_10A_150305:
+  condition:
+    - CD8Tcell
+  donor: 5483
+
+
+Donor5483_CD8_10B_150305:
+  condition:
+    - CD8Tcell
+  donor: 5483
+
+
+Donor5483_CLP_14A_150305:
+  condition:
+    - CLP
+  donor: 5483
+
+
+Donor5483_Erythroblast_15A_150305:
+  condition:
+    - Ery
+  donor: 5483
+
+
+Donor5483_Erythroblast_15B_150305:
+  condition:
+    - Ery
+  donor: 5483
+
+
+Donor5483_Erythroblast_15C_150305:
+  condition:
+    - Ery
+  donor: 5483
+
+
+Donor5483_NK_11A_150305:
+  condition:
+    - Nkcell
+  donor: 5483
+
+
+Donor5483_Nkcell_11B_150305:
+  condition:
+    - Nkcell
+  donor: 5483
+
+
+Donor6926_CLP_14A_150318:
+  condition:
+    - CLP
+  donor: 6296
+
+
+Donor6926_Erythroblast_15A_150318:
+  condition:
+    - Ery
+  donor: 6296
+
+
+Donor6926_Erythroblast_15B_150318:
+  condition:
+    - Ery
+  donor: 6296
+
+
+Donor7256_1A_110614:
+  condition:
+    - HSC
+  donor: 7256
+
+
+Donor7256_1B_110614:
+  condition:
+    - HSC
+  donor: 7256
+
+
+Donor7256_2A_110614:
+  condition:
+    - MPP
+  donor: 7256
+
+
+Donor7256_2B_110614:
+  condition:
+    - MPP
+  donor: 7256
+
+
+Donor7256_3A_141106:
+  condition:
+    - LMPP
+  donor: 7256
+
+
+Donor7256_4A_110614:
+  condition:
+    - CMP
+  donor: 7256
+
+
+Donor7256_4B_141106:
+  condition:
+    - CMP
+  donor: 7256
+
+
+Donor7256_5A_141106:
+  condition:
+    - GMP
+  donor: 7256
+
+
+Donor7256_5B_141106:
+  condition:
+    - GMP
+  donor: 7256
+
+
+Donor7256_6A_141106:
+  condition:
+    - MEP
+  donor: 7256
+
+
+Donor7256_6B_141106:
+  condition:
+    - MEP
+  donor: 7256
+
+
+Donor7256_7A_141106:
+  condition:
+    - Mono
+  donor: 7256
+
+
+Donor7256_7B_141106:
+  condition:
+    - Mono
+  donor: 7256
+
+
+Donor5483_Bcell_13B_150305:
+  condition:
+    - Bcell
+  donor: 5483
+
+
+Donor6926_CLP_14B_150318:
+  condition:
+    - CLP
+  donor: 6926
+
+
+SU048_Leuk_Rep1_140813:
+  condition:
+    - Blast
+  donor: SU048
+
+
+SU048_Leuk_Rep1_150212:
+  condition:
+    - Blast
+  donor: SU048
+
+
+
+SU048_Leuk_Rep2_140813:
+  condition:
+    - Blast
+  donor: SU048
+
+
+
+SU048_Leuk_Rep2_150212:
+  condition:
+    - Blast
+  donor: SU048
+
+
+SU048_Leuk_Rep3_140813:
+  condition:
+    - Blast
+  donor: SU048
+
+
+
+SU048_Leuk:
+  condition:
+    - Blast
+  donor: SU048
+
+
+
+SU048_pHSC:
+  condition:
+    - pHSC
+  donor: SU048
+
+
+
+SU070_Leuk_140603:
+  condition:
+    - Blast
+  donor: SU070
+
+
+
+SU070_Leuk_Rep2_140805:
+  condition:
+    - Blast
+  donor: SU070
+
+
+SU070_LSC_140603:
+  condition:
+    - LSC
+  donor: SU070
+
+
+SU070_pHSC_140603:
+  condition:
+    - pHSC
+  donor: SU070
+
+
+SU070_pHSC_Rep2_140805:
+  condition:
+    - pHSC
+  donor: SU070
+
+
+SU209_Leuk_140911:
+  condition:
+    - Blast
+  donor: SU209
+
+
+SU209_LSC_012015:
+  condition:
+    - LSC
+  donor: SU209
+
+
+SU209_pHSC_140911:
+  condition:
+    - pHSC
+  donor: SU209
+
+
+SU209_pHSC_A_150627:
+  condition:
+    - pHSC
+  donor: SU209
+
+
+SU209_pHSC_B_150627:
+  condition:
+    - pHSC
+  donor: SU209
+
+
+SU306_Leuk_141121:
+  condition:
+    - Blast
+  donor: SU306
+
+
+SU306_pHSC_141121:
+  condition:
+    - pHSC
+  donor: SU306
+
+
+SU336_Leuk_141119:
+  condition:
+    - Blast
+  donor: SU306
+
+
+SU336_pHSC_141119:
+  condition:
+    - pHSC
+  donor: SU336
+
+
+
+SU351_Leuk_140814:
+  condition:
+    - Blast
+  donor: SU351
+
+
+SU351_pHSC_140814:
+  condition:
+    - pHSC
+  donor: SU351
+
+
+SU353_Leuk_140923:
+  condition:
+    - Blast
+  donor: SU353
+
+
+SU353_LSC_150120:
+  condition:
+    - LSC
+  donor: SU353
+
+
+SU353_pHSC_140923:
+  condition:
+    - pHSC
+  donor: SU353
+
+
+SU444_Leuk_141118:
+  condition:
+    - Blast
+  donor: SU444
+
+
+
+SU444_LSC_012015:
+  condition:
+    - LSC
+  donor: SU444
+
+
+SU444_pHSC_141118:
+  condition:
+    - pHSC
+  donor: SU444
+
+
+SU484_Leuk_140812:
+  condition:
+    - Blast
+  donor: SU484
+
+
+SU484_pHSC_140812:
+  condition:
+    - pHSC
+  donor: SU484
+
+
+SU496_Leuk_140814:
+  condition:
+    - Blast
+  donor: SU496
+
+
+SU496_LSC_012015:
+  condition:
+    - LSC
+  donor: SU496
+
+
+SU496_pHSC_140814:
+  condition:
+    - pHSC
+  donor: SU496
+
+
+SU501_Leuk_141118:
+  condition:
+    - Blast
+  donor: SU501
+
+
+
+SU501_pHSC_141118:
+  condition:
+    - pHSC
+  donor: SU501
+
+
+SU575_Leuk:
+  condition:
+    - Blast
+  donor: SU575
+
+
+SU575_LSC_150120:
+  condition:
+    - LSC
+  donor: SU575
+
+
+SU575_pHSC:
+  condition:
+    - pHSC
+  donor: SU575
+
+
+SU583_Leuk_141115:
+  condition:
+    - Blast
+  donor: SU583
+
+
+SU583_LSC_150120:
+  condition:
+    - LSC
+  donor: SU583
+
+
+SU583_pHSC_141115:
+  condition:
+    - pHSC
+  donor: SU583
+
+SU583_pHSC_150627:
+  condition:
+    - pHSC
+  donor: SU583
+
+SU623_Leuk_Rep1_150212:
+  condition:
+    - Blast
+  donor: SU623
+
+SU623_Leuk_Rep2_150212:
+  condition:
+    - Blast
+  donor: SU623
+
+SU623_Leuk:
+  condition:
+    - Blast
+  donor: SU623
+
+SU623_pHSC:
+  condition:
+    - pHSC
+  donor: SU623
+
+SU654_Leuk_141115:
+  condition:
+    - Blast
+  donor: SU654
+
+SU654_LSC_150120:
+  condition:
+    - LSC
+  donor: SU654
+
+SU654_pHSC_141115:
+  condition:
+    -  pHSC
+  donor: SU654
