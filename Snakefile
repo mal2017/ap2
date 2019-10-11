@@ -87,7 +87,7 @@ rule align_bt2:
     conda:
         "envs/bowtie2.yaml"
     threads:
-        2
+        1
     params:
         idx_pfx = config.get("BT2_IDX_PFX",None),
         trim=BT2_TRIM_SIZE,
@@ -137,7 +137,7 @@ rule fix_mate_info:
         temp("{s}.fixm.cram")
     conda:
         "envs/bowtie2.yaml"
-    threads: 2
+    threads: 1
     shell:
         "samtools fixmate -m --reference {input.fa} {input.crm} - | "
         "samtools sort -O cram "
@@ -162,7 +162,7 @@ rule clean_reads:
     conda:
         "envs/bowtie2.yaml"
     threads:
-        2
+        1
     shell:
         "samtools view -u -q {params.mapq} "
         "--reference {input.fa} {input.crm} {params.chr} | "
@@ -220,7 +220,7 @@ rule call_footprints:
     conda:
         "envs/pydnase.yaml"
     threads:
-        2
+        1
     params:
         odir= "{s}-fp-tmp/",
         pv = PYDNASE_PVAL
@@ -340,18 +340,18 @@ rule help:
 
         # set up cluster variables
         CLUSTER_NAME=snk-cl2
-        NODES=6
+        NODES=8
         ZONE=us-central1-a
         REMOTE=GS
         PREFIX=archibald
-        MACHINE_TYPE=n1-standard-4
+        MACHINE_TYPE=n1-standard-2
 
         # initialize cluster
         gcloud container clusters create $CLUSTER_NAME \
             --num-nodes=$NODES \
             --scopes storage-rw \
             --machine-type=$MACHINE_TYPE \
-            --zone $ZONE \
+            --zone $ZONE
 
         # register cluster info
         gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
@@ -361,7 +361,9 @@ rule help:
             --default-remote-provider $REMOTE \
             --default-remote-prefix $PREFIX \
             --latency-wait 300 \
-            --jobs 12
+            --jobs 8 \
+            --verbose \
+            --debug-dag
 
         # shut down your cluster
         gcloud container clusters delete $CLUSTER_NAME --zone $ZONE
