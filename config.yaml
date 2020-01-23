@@ -174,330 +174,330 @@ samples:
   #         - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8361363/SRR8361363_1.fastq.gz
   #       r2:
   #         - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR836/003/SRR8361363/SRR8361363_2.fastq.gz
-  4983_1A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920466/SRR2920466_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920466/SRR2920466_2.fastq.gz
-    condition:
-      - HSC
-      - primary
-  4983_2A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920467/SRR2920467_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920467/SRR2920467_2.fastq.gz
-    condition:
-      - MPP
-      - primary
-  4983_3A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920468/SRR2920468_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920468/SRR2920468_2.fastq.gz
-    condition:
-      - LMPP
-      - primary
-  4983_4A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920469/SRR2920469_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920469/SRR2920469_2.fastq.gz
-    condition:
-      - CMP
-      - primary
-  4983_4B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920470/SRR2920470_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920470/SRR2920470_2.fastq.gz
-    condition:
-      - CMP
-      - primary
-  4983_5A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920471/SRR2920471_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920471/SRR2920471_2.fastq.gz
-    condition:
-      - GMP
-      - primary
-  4983_5B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920472/SRR2920472_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920472/SRR2920472_2.fastq.gz
-    condition:
-      - GMP
-      - primary
-  4983_6A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920473/SRR2920473_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920473/SRR2920473_2.fastq.gz
-    condition:
-      - MEP
-      - primary
-  4983_6B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920474/SRR2920474_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920474/SRR2920474_2.fastq.gz
-    condition:
-      - MEP
-      - primary
-  4983_7A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920475/SRR2920475_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920475/SRR2920475_2.fastq.gz
-    condition:
-      - Mono
-      - primary
-  4983_7B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920476/SRR2920476_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920476/SRR2920476_2.fastq.gz
-    condition:
-      - Mono
-      - primary
-  6792_1A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920477/SRR2920477_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920477/SRR2920477_2.fastq.gz
-    condition:
-      - HSC
-      - primary
-  6792_1B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920478/SRR2920478_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920478/SRR2920478_2.fastq.gz
-    condition:
-      - HSC
-      - primary
-  6792_2A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920479/SRR2920479_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920479/SRR2920479_2.fastq.gz
-    condition:
-      - MPP
-      - primary
-  6792_3A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920480/SRR2920480_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920480/SRR2920480_2.fastq.gz
-    condition:
-      - LMPP
-      - primary
-  6792_4A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920481/SRR2920481_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920481/SRR2920481_2.fastq.gz
-    condition:
-      - CMP
-      - primary
-  6792_4B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920482/SRR2920482_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920482/SRR2920482_2.fastq.gz
-    condition:
-      - CMP
-      - primary
-  6792_5A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920483/SRR2920483_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920483/SRR2920483_2.fastq.gz
-    condition:
-      - GMP
-      - primary
-  6792_5B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920484/SRR2920484_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920484/SRR2920484_2.fastq.gz
-    condition:
-      - GMP
-      - primary
-  6792_6A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920485/SRR2920485_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920485/SRR2920485_2.fastq.gz
-    condition:
-      - MEP
-      - primary
-  6792_6B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920486/SRR2920486_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920486/SRR2920486_2.fastq.gz
-    condition:
-      - MEP
-      - primary
-  6792_7A:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920487/SRR2920487_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920487/SRR2920487_2.fastq.gz
-    condition:
-      - Mono
-      - primary
-  6792_7B:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920488/SRR2920488_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920488/SRR2920488_2.fastq.gz
-    condition:
-      - Mono
-      - primary
-  BM_CD34_1:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920489/SRR2920489_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920489/SRR2920489_2.fastq.gz
-    condition:
-      - CD34_BM
-      - primary
-  BM_CD34_2:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920490/SRR2920490_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920490/SRR2920490_2.fastq.gz
-    condition:
-      - CD34_BM
-      - primary
-  CB102_CD34_150627:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920491/SRR2920491_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920491/SRR2920491_2.fastq.gz
-    condition:
-      - CD34_CB
-      - primary
-  Donor1022_Bcell_13_150120:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920492/SRR2920492_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920492/SRR2920492_2.fastq.gz
-    condition:
-      - Bcell
-      - primary
-  Donor1022_CD4_9_150120:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920493/SRR2920493_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920493/SRR2920493_2.fastq.gz
-    condition:
-      - CD4Tcell
-      - primary
-  Donor1022_CD8_10_150120:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920494/SRR2920494_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920494/SRR2920494_2.fastq.gz
-    condition:
-      - CD8Tcell
-      - primary
-  Donor1022_Nkcell_11_150120:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920495/SRR2920495_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920495/SRR2920495_2.fastq.gz
-    condition:
-      - Nkcell
-      - primary
-  Donor2596_CD4_9A_150303:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920496/SRR2920496_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920496/SRR2920496_2.fastq.gz
-    condition:
-      - CD4Tcell
-      - primary
-  Donor2596_CD8_10B_150303:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920497/SRR2920497_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920497/SRR2920497_2.fastq.gz
-    condition:
-      - CD8Tcell
-      - primary
-  Donor2596_CLP_14A_150303:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920498/SRR2920498_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920498/SRR2920498_2.fastq.gz
-    condition:
-      - CLP
-      - primary
-  Donor2596_CLP_14B_150303:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920499/SRR2920499_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920499/SRR2920499_2.fastq.gz
-    condition:
-      - CLP
-      - primary
-  Donor2596_CMP_4A_150303:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920500/SRR2920500_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920500/SRR2920500_2.fastq.gz
-    condition:
-      - CMP
-      - primary
-  Donor2596_CMP_4B_150303:
-    fastq:
-      r1:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920501/SRR2920501_1.fastq.gz
-      r2:
-        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920501/SRR2920501_2.fastq.gz
-    condition:
-      - CMP
-      - primary
+  # 4983_1A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920466/SRR2920466_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920466/SRR2920466_2.fastq.gz
+  #   condition:
+  #     - HSC
+  #     - primary
+  # 4983_2A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920467/SRR2920467_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920467/SRR2920467_2.fastq.gz
+  #   condition:
+  #     - MPP
+  #     - primary
+  # 4983_3A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920468/SRR2920468_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920468/SRR2920468_2.fastq.gz
+  #   condition:
+  #     - LMPP
+  #     - primary
+  # 4983_4A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920469/SRR2920469_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920469/SRR2920469_2.fastq.gz
+  #   condition:
+  #     - CMP
+  #     - primary
+  # 4983_4B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920470/SRR2920470_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920470/SRR2920470_2.fastq.gz
+  #   condition:
+  #     - CMP
+  #     - primary
+  # 4983_5A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920471/SRR2920471_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920471/SRR2920471_2.fastq.gz
+  #   condition:
+  #     - GMP
+  #     - primary
+  # 4983_5B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920472/SRR2920472_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920472/SRR2920472_2.fastq.gz
+  #   condition:
+  #     - GMP
+  #     - primary
+  # 4983_6A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920473/SRR2920473_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920473/SRR2920473_2.fastq.gz
+  #   condition:
+  #     - MEP
+  #     - primary
+  # 4983_6B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920474/SRR2920474_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920474/SRR2920474_2.fastq.gz
+  #   condition:
+  #     - MEP
+  #     - primary
+  # 4983_7A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920475/SRR2920475_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920475/SRR2920475_2.fastq.gz
+  #   condition:
+  #     - Mono
+  #     - primary
+  # 4983_7B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920476/SRR2920476_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920476/SRR2920476_2.fastq.gz
+  #   condition:
+  #     - Mono
+  #     - primary
+  # 6792_1A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920477/SRR2920477_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920477/SRR2920477_2.fastq.gz
+  #   condition:
+  #     - HSC
+  #     - primary
+  # 6792_1B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920478/SRR2920478_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920478/SRR2920478_2.fastq.gz
+  #   condition:
+  #     - HSC
+  #     - primary
+  # 6792_2A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920479/SRR2920479_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920479/SRR2920479_2.fastq.gz
+  #   condition:
+  #     - MPP
+  #     - primary
+  # 6792_3A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920480/SRR2920480_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920480/SRR2920480_2.fastq.gz
+  #   condition:
+  #     - LMPP
+  #     - primary
+  # 6792_4A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920481/SRR2920481_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920481/SRR2920481_2.fastq.gz
+  #   condition:
+  #     - CMP
+  #     - primary
+  # 6792_4B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920482/SRR2920482_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920482/SRR2920482_2.fastq.gz
+  #   condition:
+  #     - CMP
+  #     - primary
+  # 6792_5A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920483/SRR2920483_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920483/SRR2920483_2.fastq.gz
+  #   condition:
+  #     - GMP
+  #     - primary
+  # 6792_5B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920484/SRR2920484_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920484/SRR2920484_2.fastq.gz
+  #   condition:
+  #     - GMP
+  #     - primary
+  # 6792_6A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920485/SRR2920485_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920485/SRR2920485_2.fastq.gz
+  #   condition:
+  #     - MEP
+  #     - primary
+  # 6792_6B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920486/SRR2920486_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920486/SRR2920486_2.fastq.gz
+  #   condition:
+  #     - MEP
+  #     - primary
+  # 6792_7A:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920487/SRR2920487_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920487/SRR2920487_2.fastq.gz
+  #   condition:
+  #     - Mono
+  #     - primary
+  # 6792_7B:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920488/SRR2920488_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920488/SRR2920488_2.fastq.gz
+  #   condition:
+  #     - Mono
+  #     - primary
+  # BM_CD34_1:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920489/SRR2920489_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920489/SRR2920489_2.fastq.gz
+  #   condition:
+  #     - CD34_BM
+  #     - primary
+  # BM_CD34_2:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920490/SRR2920490_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920490/SRR2920490_2.fastq.gz
+  #   condition:
+  #     - CD34_BM
+  #     - primary
+  # CB102_CD34_150627:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920491/SRR2920491_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920491/SRR2920491_2.fastq.gz
+  #   condition:
+  #     - CD34_CB
+  #     - primary
+  # Donor1022_Bcell_13_150120:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920492/SRR2920492_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920492/SRR2920492_2.fastq.gz
+  #   condition:
+  #     - Bcell
+  #     - primary
+  # Donor1022_CD4_9_150120:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920493/SRR2920493_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920493/SRR2920493_2.fastq.gz
+  #   condition:
+  #     - CD4Tcell
+  #     - primary
+  # Donor1022_CD8_10_150120:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920494/SRR2920494_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920494/SRR2920494_2.fastq.gz
+  #   condition:
+  #     - CD8Tcell
+  #     - primary
+  # Donor1022_Nkcell_11_150120:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920495/SRR2920495_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920495/SRR2920495_2.fastq.gz
+  #   condition:
+  #     - Nkcell
+  #     - primary
+  # Donor2596_CD4_9A_150303:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920496/SRR2920496_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/006/SRR2920496/SRR2920496_2.fastq.gz
+  #   condition:
+  #     - CD4Tcell
+  #     - primary
+  # Donor2596_CD8_10B_150303:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920497/SRR2920497_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920497/SRR2920497_2.fastq.gz
+  #   condition:
+  #     - CD8Tcell
+  #     - primary
+  # Donor2596_CLP_14A_150303:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920498/SRR2920498_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920498/SRR2920498_2.fastq.gz
+  #   condition:
+  #     - CLP
+  #     - primary
+  # Donor2596_CLP_14B_150303:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920499/SRR2920499_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920499/SRR2920499_2.fastq.gz
+  #   condition:
+  #     - CLP
+  #     - primary
+  # Donor2596_CMP_4A_150303:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920500/SRR2920500_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920500/SRR2920500_2.fastq.gz
+  #   condition:
+  #     - CMP
+  #     - primary
+  # Donor2596_CMP_4B_150303:
+  #   fastq:
+  #     r1:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920501/SRR2920501_1.fastq.gz
+  #     r2:
+  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920501/SRR2920501_2.fastq.gz
+  #   condition:
+  #     - CMP
+  #     - primary
   # Donor2596_Erythroblast_15A_150303:
   #   fastq:
   #     r1:
@@ -1227,84 +1227,84 @@ samples:
   #   condition:
   #     - LSC
   #     - primary
-  # SU583_pHSC_141115:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920587/SRR2920587_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920587/SRR2920587_2.fastq.gz
-  #   condition:
-  #     - pHSC
-  #     - primary
-  # SU583_pHSC_150627:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920588/SRR2920588_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920588/SRR2920588_2.fastq.gz
-  #   condition:
-  #     - pHSC
-  #     - primary
-  # SU623_Leuk:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920591/SRR2920591_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920591/SRR2920591_2.fastq.gz
-  #   condition:
-  #     - Blast
-  #     - primary
-  # SU623_Leuk_Rep1_150212:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920589/SRR2920589_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920589/SRR2920589_2.fastq.gz
-  #   condition:
-  #     - Blast
-  #     - primary
-  # SU623_Leuk_Rep2_150212:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920590/SRR2920590_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920590/SRR2920590_2.fastq.gz
-  #   condition:
-  #     - Blast
-  #     - primary
-  # SU623_pHSC:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920592/SRR2920592_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920592/SRR2920592_2.fastq.gz
-  #   condition:
-  #     - pHSC
-  #     - primary
-  # SU654_Leuk_141115:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920593/SRR2920593_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920593/SRR2920593_2.fastq.gz
-  #   condition:
-  #     - Blast
-  #     - primary
-  # SU654_LSC_150120:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920594/SRR2920594_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920594/SRR2920594_2.fastq.gz
-  #   condition:
-  #     - LSC
-  #     - primary
-  # SU654_pHSC_141115:
-  #   fastq:
-  #     r1:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920595/SRR2920595_1.fastq.gz
-  #     r2:
-  #       - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920595/SRR2920595_2.fastq.gz
-  #   condition:
-  #     - pHSC
-  #     - primary
+  SU583_pHSC_141115:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920587/SRR2920587_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/007/SRR2920587/SRR2920587_2.fastq.gz
+    condition:
+      - pHSC
+      - primary
+  SU583_pHSC_150627:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920588/SRR2920588_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/008/SRR2920588/SRR2920588_2.fastq.gz
+    condition:
+      - pHSC
+      - primary
+  SU623_Leuk:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920591/SRR2920591_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/001/SRR2920591/SRR2920591_2.fastq.gz
+    condition:
+      - Blast
+      - primary
+  SU623_Leuk_Rep1_150212:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920589/SRR2920589_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/009/SRR2920589/SRR2920589_2.fastq.gz
+    condition:
+      - Blast
+      - primary
+  SU623_Leuk_Rep2_150212:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920590/SRR2920590_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/000/SRR2920590/SRR2920590_2.fastq.gz
+    condition:
+      - Blast
+      - primary
+  SU623_pHSC:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920592/SRR2920592_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/002/SRR2920592/SRR2920592_2.fastq.gz
+    condition:
+      - pHSC
+      - primary
+  SU654_Leuk_141115:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920593/SRR2920593_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/003/SRR2920593/SRR2920593_2.fastq.gz
+    condition:
+      - Blast
+      - primary
+  SU654_LSC_150120:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920594/SRR2920594_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/004/SRR2920594/SRR2920594_2.fastq.gz
+    condition:
+      - LSC
+      - primary
+  SU654_pHSC_141115:
+    fastq:
+      r1:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920595/SRR2920595_1.fastq.gz
+      r2:
+        - ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/005/SRR2920595/SRR2920595_2.fastq.gz
+    condition:
+      - pHSC
+      - primary
