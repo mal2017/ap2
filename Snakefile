@@ -362,8 +362,7 @@ rule help:
             --default-remote-prefix $PREFIX \
             --latency-wait 300 \
             --jobs 8 \
-            --verbose \
-            --debug-dag
+            --verbose
 
         # shut down your cluster
         gcloud container clusters delete $CLUSTER_NAME --zone $ZONE

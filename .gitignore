@@ -5,3 +5,4 @@ ftp*
 .DS_Store
 *fastq
 *fq
+config.yaml
