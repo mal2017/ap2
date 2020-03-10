@@ -61,10 +61,11 @@ rule target:
     Generate footprints, peaks, and a cut matrix from all samples in the manifest.
     """
     input:
-        expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
-        expand("{s}_smts.bed",s=config.get("samples",None)),
+        #expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
+        #expand("{s}_smts.bed",s=config.get("samples",None)),
+        #expand("{s}.clean.bam",s=config.get("samples",None)),
         expand("{s}_fps.bed",s=config.get("samples",None)),
-        expand("{s}.cpm.bw",s=config.get("samples",None)),
+        #expand("{s}.cpm.bw",s=config.get("samples",None)),
 
 # ------------------------------------------------------------------------------
 # Preproc
