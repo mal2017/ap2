@@ -21,7 +21,7 @@ GS = GSRemoteProvider()
 FTP = FTPRemoteProvider()
 S3 = S3RemoteProvider()
 HTTP = HTTPRemoteProvider()
-configfile: "config.yaml"
+
 
 # PARAMS
 BT2_TRIM_SIZE = config.get("BT2_TRIM_SIZE",30)
