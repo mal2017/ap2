@@ -88,7 +88,7 @@ rule align_bt2:
     conda:
         "envs/bowtie2.yaml"
     threads:
-        1
+        8
     params:
         idx_pfx = config.get("BT2_IDX_PFX",None),
         trim=BT2_TRIM_SIZE,
@@ -97,6 +97,7 @@ rule align_bt2:
         "bowtie2 --trim-to 3:{params.trim} --phred33 "
         "--no-discordant "
         "--no-unal "
+	"-p {threads} "
         "-k 1 -X {params.isize} "
         "-x {params.idx_pfx} -1 {input.r1} -2 {input.r2} |"
         #"--skip 1000000 "
@@ -167,6 +168,7 @@ rule clean_reads:
     shell:
         "samtools view -u -q {params.mapq} "
         "--reference {input.fa} {input.crm} {params.chr} | "
+	"samtools sort | "
         "samtools markdup -r "
         "--output-fmt-option lossy_names=1,level=9,store_md=0,store_nm=0 "
         "--reference {input.fa} - {output}"
@@ -221,7 +223,7 @@ rule call_footprints:
     conda:
         "envs/pydnase.yaml"
     threads:
-        1
+        8
     params:
         odir= "{s}-fp-tmp/",
         pv = PYDNASE_PVAL

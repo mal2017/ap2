@@ -16,16 +16,16 @@
         "time" : "4:00:00",
         "cpus" : 2,
     },
-		"call_footprints" :
-		{
-				"mem" : 20000,
-				"time" : "8:00:00",
-				"cpus" : 2,
-		},
-		"make_bigwigs" :
-		{
-				"mem" : 20000,
-				"time" : "8:00:00",
-				"cpus" : 2,
-		},
+    "call_footprints" :
+    {
+        "mem" : 20000,
+        "time" : "8:00:00",
+        "cpus" : 2,
+    },
+    "make_bigwigs" :
+    {
+        "mem" : 20000,
+        "time" : "8:00:00",
+        "cpus" : 2,
+    },
 }
