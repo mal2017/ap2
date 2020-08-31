@@ -37,7 +37,7 @@ def determine_resource(path):
     if "gs://" in path:
          return GS.remote(path.replace("gs://",""))
     elif "ftp://" in path:
-         return FTP.remote(path)
+         return FTP.remote(path,stay_on_remote=True, immediate_close=True)
     elif "s3://" in path:
          return S3.remote(path.replace("s3://",""))
     elif "http://" in path:
@@ -61,11 +61,12 @@ rule target:
     Generate footprints, peaks, and a cut matrix from all samples in the manifest.
     """
     input:
-        #expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
-        #expand("{s}_smts.bed",s=config.get("samples",None)),
-        #expand("{s}.clean.bam",s=config.get("samples",None)),
-        expand("{s}_fps.bed",s=config.get("samples",None)),
+        expand("{s}_peaks.mrg.bed",s=config.get("samples",None)),
+        expand("{s}_smts.bed",s=config.get("samples",None)),
+        expand("{s}.clean.bam",s=config.get("samples",None)),
+        #expand("{s}_fps.bed",s=config.get("samples",None)),
         #expand("{s}.cpm.bw",s=config.get("samples",None)),
+        #expand("{s}.raw.cram",s=config.get("samples",None)),
 
 # ------------------------------------------------------------------------------
 # Preproc
